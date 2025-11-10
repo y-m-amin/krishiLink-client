@@ -1,16 +1,53 @@
-import React from 'react';
-import { Link } from 'react-router';
+import { Link } from "react-router";
 
 const CropCard = ({ crop }) => {
+  const {
+    _id,
+    image,
+    name,
+    type,
+    unit,
+    pricePerUnit,
+    quantity,
+    location,
+    isNew, 
+  } = crop || {};
+
   return (
-    <div className="border p-4 rounded shadow">
-      <img src={crop.image} alt={crop.name} className="h-40 w-full object-cover rounded" />
-      <h3 className="text-xl font-bold mt-2">{crop.name}</h3>
-      <p>{crop.type} - {crop.unit}</p>
-      <p>Price: ৳{crop.pricePerUnit}/{crop.unit}</p>
-      <p>Qty: {crop.quantity} {crop.unit}</p>
-      <p className="text-sm text-gray-500">{crop.location}</p>
-      <Link to={`/crops/${crop._id}`} className="mt-2 inline-block text-blue-600 underline">View Details</Link>
+    <div className="card bg-base-100 w-full shadow-sm">
+      <figure className="h-40">
+        <img
+          src={image}
+          alt={name}
+          className="h-40 w-full object-cover"
+        />
+      </figure>
+
+      <div className="card-body p-4">
+        <h2 className="card-title text-lg">
+          {name}
+          {isNew ? <div className="badge badge-secondary">NEW</div> : null}
+        </h2>
+
+        <p className="text-sm text-base-content/70">{location}</p>
+
+        <div className="flex flex-wrap gap-2 mt-1">
+          {type ? <div className="badge badge-outline">{type}</div> : null}
+          {unit ? <div className="badge badge-outline">{unit}</div> : null}
+          <div className="badge">
+            ৳{pricePerUnit}/{unit}
+          </div>
+          <div className="badge">
+            Qty: {quantity} {unit}
+          </div>
+        </div>
+
+        <div className="card-actions justify-end mt-2">
+          <Link to={`/crops/${_id}`} className="btn btn-sm btn-primary">
+            View Details
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };
