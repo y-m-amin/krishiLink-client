@@ -1,8 +1,6 @@
-import React, { useContext } from 'react';
-import { Outlet } from 'react-router';
-import Navbar from '../components/Navbar';
+import { Outlet, useLocation } from 'react-router';
 import Footer from '../components/Footer';
-import { useLocation } from 'react-router';
+import Navbar from '../components/Navbar';
 
 const MainLayout = () => {
   const location = useLocation();
@@ -13,7 +11,7 @@ const MainLayout = () => {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen">
+      <main className='min-h-screen '>
         <Outlet />
       </main>
       <Footer />

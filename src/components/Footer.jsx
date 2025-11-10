@@ -1,7 +1,5 @@
-import React from 'react';
-
 const Footer = () => (
-  <footer className="bg-gray-100 p-4 text-center mt-10">
+  <footer className='bg-accent-content p-4 text-accent text-center'>
     <p>© {new Date().getFullYear()} KrishiLink. All rights reserved.</p>
   </footer>
 );
