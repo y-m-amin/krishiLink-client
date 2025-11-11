@@ -14,31 +14,42 @@ const CropCard = ({ crop }) => {
   } = crop || {};
 
   return (
-    <div className='card bg-base-200 w-full shadow-sm'>
-      <figure className='h-40'>
-        <img src={image} alt={name} className='h-40 w-full object-cover' />
+    <div className='card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-base-200'>
+      <figure className='relative h-48 overflow-hidden rounded-t-lg'>
+        <img
+          src={image || '/placeholder-crop.jpg'}
+          alt={name}
+          className='w-full h-full object-cover transition-transform duration-500 hover:scale-105'
+        />
+        {isNew && (
+          <div className='absolute top-2 left-2 badge badge-secondary text-xs'>
+            NEW
+          </div>
+        )}
       </figure>
 
       <div className='card-body p-4'>
-        <h2 className='card-title text-lg'>
+        <h2 className='card-title text-lg font-semibold flex justify-between items-center'>
           {name}
-          {isNew ? <div className='badge badge-secondary'>NEW</div> : null}
+          <span className='text-primary font-bold text-sm'>
+            ৳{pricePerUnit}/{unit}
+          </span>
         </h2>
 
-        <p className='text-sm text-base-content/70'>{location}</p>
+        <p className='text-sm text-base-content/70 flex items-center gap-1'>
+          📍 {location}
+        </p>
 
-        <div className='flex flex-wrap gap-2 mt-1'>
-          {type ? <div className='badge badge-outline'>{type}</div> : null}
-          {unit ? <div className='badge badge-outline'>{unit}</div> : null}
-          <div className='badge'>
-            ৳{pricePerUnit}/{unit}
-          </div>
-          <div className='badge'>
+        <div className='flex flex-wrap gap-2 mt-3'>
+          {type && (
+            <div className='badge badge-outline badge-secondary'>{type}</div>
+          )}
+          <div className='badge badge-outline badge-accent'>
             Qty: {quantity} {unit}
           </div>
         </div>
 
-        <div className='card-actions justify-end mt-2'>
+        <div className='card-actions justify-end mt-4'>
           <Link to={`/crops/${_id}`} className='btn btn-sm btn-primary'>
             View Details
           </Link>

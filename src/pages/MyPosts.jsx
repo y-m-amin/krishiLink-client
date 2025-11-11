@@ -63,8 +63,12 @@ const MyPosts = () => {
 
     if (res.ok) {
       alert('Crop updated!');
-      setEditingCrop(null);
-      document.getElementById('edit_modal').close();
+
+      const modal = document.getElementById('edit_modal');
+      modal.close();
+
+      setTimeout(() => setEditingCrop(null), 150);
+
       fetchMyCrops();
     }
   };
@@ -197,11 +201,16 @@ const MyPosts = () => {
                 <button type='submit' className='btn btn-success text-white'>
                   Save
                 </button>
-                <form method='dialog'>
-                  <button className='btn' onClick={() => setEditingCrop(null)}>
-                    Cancel
-                  </button>
-                </form>
+                <button
+                  type='button'
+                  className='btn'
+                  onClick={() => {
+                    document.getElementById('edit_modal').close();
+                    setTimeout(() => setEditingCrop(null), 150);
+                  }}
+                >
+                  Cancel
+                </button>
               </div>
             </form>
           )}

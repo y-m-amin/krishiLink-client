@@ -32,10 +32,10 @@ const Login = () => {
 
   return (
     <div className='hero bg-base-200 min-h-screen'>
-      <div className='hero-content flex-col lg:flex-row-reverse'>
+      <div className='hero-content flex-col lg:flex-row-reverse gap-20 mx-auto'>
         {/* Left side text */}
         <div className='text-center lg:text-left'>
-          <h1 className='text-5xl font-bold text-primary'>Login now!</h1>
+          <h1 className='text-5xl font-bold text-accent'>Login now!</h1>
           <p className='py-6 max-w-md text-gray-600'>
             Access your account to explore and manage your crops effortlessly.
             Stay connected, grow smarter, and keep track of your agri-business.
@@ -72,7 +72,10 @@ const Login = () => {
 
               {error && <p className='text-red-500 text-sm'>{error}</p>}
 
-              <button type='submit' className='btn btn-neutral w-full mt-2'>
+              <button
+                type='submit'
+                className='btn btn-accent btn-outline w-full mt-2'
+              >
                 Login
               </button>
 
@@ -80,7 +83,7 @@ const Login = () => {
               <button
                 type='button'
                 onClick={handleGoogle}
-                className='btn btn-outline w-full mt-2'
+                className='btn btn-outline btn-secondary w-full mt-2'
               >
                 <img
                   src='https://www.svgrepo.com/show/475656/google-color.svg'

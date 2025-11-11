@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
-import { API_BASE_URL } from '../config';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { API_BASE_URL } from '../config';
+import { AuthContext } from '../contexts/AuthContext';
 
 const AddCrop = () => {
   const { user } = useContext(AuthContext);
@@ -58,24 +58,139 @@ const AddCrop = () => {
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Add New Crop</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input name="name" placeholder="Crop Name" onChange={handleChange} required className="w-full border p-2" />
-        <input name="type" placeholder="Type (e.g., Vegetable)" onChange={handleChange} required className="w-full border p-2" />
-        <input name="pricePerUnit" type="number" placeholder="Price per unit" onChange={handleChange} required className="w-full border p-2" />
-        <select name="unit" onChange={handleChange} className="w-full border p-2">
-          <option value="kg">kg</option>
-          <option value="ton">ton</option>
-          <option value="bag">bag</option>
-        </select>
-        <input name="quantity" type="number" placeholder="Estimated Quantity" onChange={handleChange} required className="w-full border p-2" />
-        <input name="location" placeholder="Location" onChange={handleChange} required className="w-full border p-2" />
-        <input name="image" placeholder="Image URL" onChange={handleChange} required className="w-full border p-2" />
-        <textarea name="description" placeholder="Description" onChange={handleChange} required className="w-full border p-2"></textarea>
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Add Crop</button>
-      </form>
-      {error && <p className="text-red-600 mt-2">{error}</p>}
+    <div className='hero bg-base-200 min-h-screen'>
+      <div className='hero-content flex-col w-full'>
+        <div className='text-center mb-6'>
+          <h1 className='text-4xl font-bold text-primary'>Add New Crop</h1>
+          <p className='py-4 max-w-md mx-auto text-base-content/80'>
+            Provide detailed information about your crop listing so others can
+            easily view and contact you.
+          </p>
+        </div>
+
+        <div className='card bg-base-100 w-full max-w-2xl shadow-2xl'>
+          <form
+            onSubmit={handleSubmit}
+            className='card-body grid grid-cols-1 md:grid-cols-2 gap-4'
+          >
+            <div className='form-control col-span-1 md:col-span-2'>
+              <label className='label'>
+                <span className='label-text'>Crop Name</span>
+              </label>
+              <input
+                name='name'
+                placeholder='e.g. Tomato'
+                onChange={handleChange}
+                required
+                className='input input-bordered w-full'
+              />
+            </div>
+
+            <div className='form-control'>
+              <label className='label'>
+                <span className='label-text'>Type</span>
+              </label>
+              <input
+                name='type'
+                placeholder='e.g. Vegetable'
+                onChange={handleChange}
+                required
+                className='input input-bordered w-full'
+              />
+            </div>
+
+            <div className='form-control'>
+              <label className='label'>
+                <span className='label-text'>Location</span>
+              </label>
+              <input
+                name='location'
+                placeholder='e.g. Rajshahi'
+                onChange={handleChange}
+                required
+                className='input input-bordered w-full'
+              />
+            </div>
+
+            <div className='form-control'>
+              <label className='label'>
+                <span className='label-text'>Price per Unit</span>
+              </label>
+              <input
+                name='pricePerUnit'
+                type='number'
+                placeholder='e.g. 50'
+                onChange={handleChange}
+                required
+                className='input input-bordered w-full'
+              />
+            </div>
+
+            <div className='form-control'>
+              <label className='label'>
+                <span className='label-text'>Unit</span>
+              </label>
+              <select
+                name='unit'
+                onChange={handleChange}
+                className='select select-bordered w-full'
+              >
+                <option value='kg'>Kilogram</option>
+                <option value='ton'>Ton</option>
+                <option value='bag'>Bag</option>
+              </select>
+            </div>
+
+            <div className='form-control'>
+              <label className='label'>
+                <span className='label-text'>Estimated Quantity</span>
+              </label>
+              <input
+                name='quantity'
+                type='number'
+                placeholder='e.g. 100'
+                onChange={handleChange}
+                required
+                className='input input-bordered w-full'
+              />
+            </div>
+
+            <div className='form-control'>
+              <label className='label'>
+                <span className='label-text'>Image URL</span>
+              </label>
+              <input
+                name='image'
+                placeholder='Paste an image URL'
+                onChange={handleChange}
+                required
+                className='input input-bordered w-full'
+              />
+            </div>
+
+            <div className='form-control col-span-1 md:col-span-2'>
+              <label className='label'>
+                <span className='label-text'>Description</span>
+              </label>
+              <textarea
+                name='description'
+                placeholder='Add details about quality, freshness, or any special notes...'
+                onChange={handleChange}
+                required
+                className='textarea textarea-bordered w-full h-24'
+              ></textarea>
+            </div>
+
+            {error && <p className='text-error col-span-2'>{error}</p>}
+
+            <div className='form-control mt-4 col-span-1 md:col-span-2'>
+              <button type='submit' className='btn btn-primary w-full'>
+                Add Crop
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };

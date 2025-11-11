@@ -7,6 +7,7 @@ const CropDetails = () => {
   const crop = useLoaderData();
   const { user } = useContext(AuthContext);
   const { id } = useParams();
+
   const [interestSent, setInterestSent] = useState(false);
   const [formData, setFormData] = useState({ quantity: 1, message: '' });
 
@@ -60,46 +61,71 @@ const CropDetails = () => {
     return <p className='text-center text-gray-500 mt-10'>Crop not found.</p>;
 
   return (
-    <div className='w-full mx-auto min-h-screen'>
-      {/* Crop details section */}
-      <div className='w-4/5 mx-auto bg-base-300 rounded-2xl shadow-lg p-6 my-8 flex flex-col md:flex-row gap-8'>
-        {/* Crop Image */}
-        <img
-          src={crop.image}
-          alt={crop.name}
-          className='w-full md:w-1/2 rounded-2xl object-cover'
-        />
+    <div className='min-h-screen bg-base-200 py-10'>
+      {/* Crop Details Card */}
+      <div className='max-w-6xl mx-auto bg-base-100 shadow-xl rounded-2xl overflow-hidden flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300'>
+        {/* Image Section */}
+        <div className='md:w-1/2 relative'>
+          <img
+            src={crop.image}
+            alt={crop.name}
+            className='w-full h-80 md:h-full object-cover'
+          />
+          {crop.isNew && (
+            <span className='absolute top-3 left-3 badge badge-secondary'>
+              NEW
+            </span>
+          )}
+        </div>
 
         {/* Crop Info */}
-        <div className='flex-1 space-y-4'>
-          <h2 className='text-3xl font-bold text-green-700'>{crop.name}</h2>
-          <p className='text-lg'>
-            <span className='font-semibold'>Type:</span> {crop.type}
-          </p>
-          <p className='text-lg'>
-            <span className='font-semibold'>Price:</span> ৳{crop.pricePerUnit}/
-            {crop.unit}
-          </p>
-          <p className='text-lg'>
-            <span className='font-semibold'>Available Quantity:</span>{' '}
-            {crop.quantity} {crop.unit}
-          </p>
-          <p className='text-lg'>
-            <span className='font-semibold'>Location:</span> {crop.location}
-          </p>
-          <p className='text-lg'>
-            <span className='font-semibold'>Seller:</span>{' '}
-            {crop.owner?.ownerName} ({crop.owner?.ownerEmail})
-          </p>
-          <p className='text-sm opacity-80'>{crop.description}</p>
+        <div className='flex-1 p-6 space-y-4'>
+          <h2 className='text-3xl font-bold text-primary'>{crop.name}</h2>
+
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-3 text-base'>
+            <p>
+              <span className='font-semibold text-accent'>Type:</span>{' '}
+              {crop.type}
+            </p>
+            <p>
+              <span className='font-semibold text-accent'>Price:</span> ৳
+              {crop.pricePerUnit}/{crop.unit}
+            </p>
+            <p>
+              <span className='font-semibold text-accent'>Quantity:</span>{' '}
+              {crop.quantity} {crop.unit}
+            </p>
+            <p>
+              <span className='font-semibold text-accent'>Location:</span>{' '}
+              {crop.location}
+            </p>
+          </div>
+
+          <div className='border-t border-base-300 pt-3'>
+            <p className='font-semibold text-secondary'>
+              Seller:{' '}
+              <span className='font-normal text-base-content'>
+                {crop.owner?.ownerName}
+              </span>
+            </p>
+            <p className='text-sm text-base-content/70'>
+              {crop.owner?.ownerEmail}
+            </p>
+          </div>
+
+          {crop.description && (
+            <p className='mt-3 text-base-content/80 leading-relaxed'>
+              {crop.description}
+            </p>
+          )}
         </div>
       </div>
 
-      {/* Interest Form Section */}
+      {/* Interest Form for Buyers */}
       {!isOwner && user && !interestSent && (
-        <div className='w-4/5 mx-auto mt-10 bg-base-300 rounded-2xl p-6 mb-8'>
-          <h3 className='text-2xl font-semibold mb-4 text-center text-green-700'>
-            Send Interest
+        <div className='max-w-4xl mx-auto mt-10 bg-base-100 rounded-2xl shadow-md p-6'>
+          <h3 className='text-2xl font-semibold text-center text-primary mb-4'>
+            💬 Send Your Interest
           </h3>
           <form
             onSubmit={handleInterestSubmit}
@@ -112,7 +138,7 @@ const CropDetails = () => {
               onChange={(e) =>
                 setFormData({ ...formData, quantity: parseInt(e.target.value) })
               }
-              className='input input-bordered w-full'
+              className='input input-bordered input-accent w-full'
               placeholder={`Quantity (${crop.unit})`}
               required
             />
@@ -122,15 +148,15 @@ const CropDetails = () => {
               onChange={(e) =>
                 setFormData({ ...formData, message: e.target.value })
               }
-              className='input input-bordered w-full'
-              placeholder='Message'
+              className='input input-bordered input-accent w-full'
+              placeholder='Message to Seller'
             />
-            <p className='text-center font-semibold md:col-span-2'>
+            <p className='text-center font-semibold text-secondary md:col-span-2'>
               💰 Total Price: ৳{formData.quantity * crop.pricePerUnit}
             </p>
             <button
               type='submit'
-              className='btn btn-success mt-2 md:col-span-2 w-full'
+              className='btn btn-primary w-full md:col-span-2 mt-2'
             >
               Submit Interest
             </button>
@@ -138,23 +164,24 @@ const CropDetails = () => {
         </div>
       )}
 
-      {/* Already sent interest */}
+      {/* Already sent message */}
       {!isOwner && interestSent && (
-        <p className='text-green-700 text-center font-medium mb-8'>
+        <p className='text-success text-center font-medium mt-8'>
           ✅ You’ve already sent an interest for this crop.
         </p>
       )}
 
-      {/* Owner-only Interests Table */}
+      {/* Interests Table for Owner */}
       {isOwner && (
-        <div className='w-4/5 mx-auto bg-base-300 rounded-2xl shadow-lg p-6 mb-8'>
-          <h3 className='text-2xl font-semibold mb-4 text-green-700'>
-            Received Interests
+        <div className='max-w-6xl mx-auto bg-base-100 rounded-2xl shadow-md p-6 mt-10'>
+          <h3 className='text-2xl font-semibold text-primary mb-4'>
+            📥 Received Interests
           </h3>
+
           {crop.interests?.length > 0 ? (
             <div className='overflow-x-auto'>
               <table className='table w-full'>
-                <thead className='bg-green-100'>
+                <thead className='bg-base-300 text-base-content font-semibold'>
                   <tr>
                     <th>Buyer</th>
                     <th>Quantity</th>
@@ -170,13 +197,13 @@ const CropDetails = () => {
                       <td>{i.quantity}</td>
                       <td>{i.message}</td>
                       <td
-                        className={
+                        className={`font-semibold ${
                           i.status === 'accepted'
-                            ? 'text-green-600 font-semibold'
+                            ? 'text-success'
                             : i.status === 'rejected'
-                            ? 'text-red-600 font-semibold'
-                            : 'text-yellow-600 font-semibold'
-                        }
+                            ? 'text-error'
+                            : 'text-warning'
+                        }`}
                       >
                         {i.status}
                       </td>
@@ -206,7 +233,7 @@ const CropDetails = () => {
               </table>
             </div>
           ) : (
-            <p className='text-gray-500'>No interests yet.</p>
+            <p className='text-gray-500 text-center'>No interests yet.</p>
           )}
         </div>
       )}

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { API_BASE_URL } from '../config';
+import { useEffect, useState } from 'react';
 import CropCard from '../components/CropCard';
+import { API_BASE_URL } from '../config';
 
 const AllCrops = () => {
   const [crops, setCrops] = useState([]);
@@ -36,34 +36,44 @@ const AllCrops = () => {
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-3xl font-semibold mb-4">All Crops</h2>
+    <div className='p-6 max-w-6xl mx-auto'>
+      {/* Heading */}
+      <h2 className='text-4xl font-bold text-center text-primary mb-8'>
+        All Crops
+      </h2>
 
       {/* Search Form */}
-      <form onSubmit={handleSearch} className="mb-6">
+      <form
+        onSubmit={handleSearch}
+        className='flex flex-col sm:flex-row justify-center items-center gap-3 mb-10'
+      >
         <input
-          type="text"
-          placeholder="Search crops..."
+          type='text'
+          placeholder='Search crops...'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="border p-2 rounded w-64"
+          className='input input-bordered w-full sm:w-72 focus:outline-none focus:ring focus:ring-primary'
         />
-        <button type="submit" className="ml-2 bg-blue-500 text-white px-4 py-2 rounded">
+        <button type='submit' className='btn btn-primary w-full sm:w-auto'>
           Search
         </button>
       </form>
 
       {/* Crop Grid */}
       {loading ? (
-        <p>Loading crops...</p>
+        <div className='flex justify-center'>
+          <span className='loading loading-spinner text-primary'></span>
+        </div>
       ) : crops.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6'>
           {crops.map((crop) => (
             <CropCard key={crop._id} crop={crop} />
           ))}
         </div>
       ) : (
-        <p className="text-gray-500">No crops found for "{searchTerm}"</p>
+        <p className='text-center text-gray-500'>
+          No crops found for "{searchTerm}"
+        </p>
       )}
     </div>
   );

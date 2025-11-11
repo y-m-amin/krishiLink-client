@@ -59,10 +59,10 @@ const Register = () => {
 
   return (
     <div className='hero bg-base-200 min-h-screen'>
-      <div className='hero-content flex-col lg:flex-row'>
+      <div className='hero-content flex-col lg:flex-row gap-20 mx-auto'>
         {/* Left side text */}
         <div className='text-center lg:text-left'>
-          <h1 className='text-5xl font-bold text-primary'>Register Now!</h1>
+          <h1 className='text-5xl font-bold text-accent'>Register Now!</h1>
           <p className='py-6 max-w-md text-gray-600'>
             Join our growing agricultural marketplace to connect directly with
             farmers and buyers. Create your account to list crops, send orders,
@@ -111,7 +111,10 @@ const Register = () => {
 
               {error && <p className='text-red-500 text-sm'>{error}</p>}
 
-              <button type='submit' className='btn btn-neutral w-full mt-2'>
+              <button
+                type='submit'
+                className='btn btn-accent btn-outline w-full mt-2'
+              >
                 Register
               </button>
 
@@ -119,7 +122,7 @@ const Register = () => {
               <button
                 type='button'
                 onClick={handleGoogleRegister}
-                className='btn btn-outline w-full mt-2'
+                className='btn btn-outline btn-secondary w-full mt-2'
               >
                 <img
                   src='https://www.svgrepo.com/show/475656/google-color.svg'
