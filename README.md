@@ -1,16 +1,31 @@
-# React + Vite
+# 🌾 KrishiLink — Farmer’s Growth & Connection Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern web application that connects **farmers, traders, and consumers** in one digital space — empowering collaboration and transparency across the agricultural sector.  
+Built with **React Router**, **TailwindCSS**, and **Firebase Authentication**, KrishiLink provides a smooth, secure, and community-driven experience for agricultural networking.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📝 Description
 
-## React Compiler
+**KrishiLink** is a social agro-network platform designed to help users share and explore agricultural opportunities.  
+Unlike traditional e-commerce platforms, KrishiLink focuses on **connection and collaboration** rather than simple buying and selling.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+For now, every user can:
+- 🌱 **Post** what they are growing or selling  
+- 🧺 **Browse** other users’ crop posts  
+- 🤝 **Show interest** to connect and collaborate  
 
-## Expanding the ESLint configuration
+The platform bridges the gap between producers and consumers, fostering a direct community where everyone benefits.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## ⚙️ Features
+
+- 🔐 Secure authentication with Firebase  
+- 🧭 Dynamic routing with React Router  
+- 💬 Post and manage crop listings  
+- 👀 View and interact with other users’ posts  
+- 💾 Real-time updates and responsive design  
+- 🚫 Custom error pages and SweetAlert feedback  
+
+---
