@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Link } from 'react-router';
+import { NavLink } from 'react-router';
 import { AuthContext } from '../contexts/AuthContext';
 
 const Navbar = () => {
@@ -9,38 +9,127 @@ const Navbar = () => {
     signOutUser().catch(console.error);
   };
 
-  // 🔹 Common links
+  // 🔹 Common links with active styling
   const links = (
     <>
       <li>
-        <Link to='/'>Home</Link>
+        <NavLink
+          to='/'
+          className={({ isActive }) =>
+            `transition-colors duration-200 ${
+              isActive
+                ? 'text-primary font-semibold underline underline-offset-4'
+                : 'hover:text-primary'
+            }`
+          }
+        >
+          Home
+        </NavLink>
       </li>
+
       <li>
-        <Link to='/crops'>All Crops</Link>
+        <NavLink
+          to='/crops'
+          className={({ isActive }) =>
+            `transition-colors duration-200 ${
+              isActive
+                ? 'text-primary font-semibold underline underline-offset-4'
+                : 'hover:text-primary'
+            }`
+          }
+        >
+          All Crops
+        </NavLink>
       </li>
 
       {user ? (
         <>
           <li>
-            <Link to='/profile'>Profile</Link>
+            <NavLink
+              to='/profile'
+              className={({ isActive }) =>
+                `transition-colors duration-200 ${
+                  isActive
+                    ? 'bg-primary text-white font-semibold rounded-md px-3 py-1'
+                    : 'hover:text-primary'
+                }`
+              }
+            >
+              Profile
+            </NavLink>
           </li>
           <li>
-            <Link to='/add-crop'>Add Crop</Link>
+            <NavLink
+              to='/add-crop'
+              className={({ isActive }) =>
+                `transition-colors duration-200 ${
+                  isActive
+                    ? 'bg-primary text-white font-semibold rounded-md px-3 mx-2 py-1'
+                    : 'hover:text-primary'
+                }`
+              }
+            >
+              Add Crop
+            </NavLink>
           </li>
           <li>
-            <Link to='/my-posts'>My Posts</Link>
+            <NavLink
+              to='/my-posts'
+              className={({ isActive }) =>
+                `transition-colors duration-200 ${
+                  isActive
+                    ? 'bg-primary text-white font-semibold rounded-md px-3 mx-2 py-1'
+                    : 'hover:text-primary'
+                }`
+              }
+            >
+              My Posts
+            </NavLink>
           </li>
           <li>
-            <Link to='/my-interests'>My Interests</Link>
+            <NavLink
+              to='/my-interests'
+              className={({ isActive }) =>
+                `transition-colors duration-200 ${
+                  isActive
+                    ? 'bg-primary text-white font-semibold rounded-md mx-2 px-2 py-1'
+                    : 'hover:text-primary'
+                }`
+              }
+            >
+              My Interests
+            </NavLink>
           </li>
         </>
       ) : (
         <>
           <li>
-            <Link to='/login'>Login</Link>
+            <NavLink
+              to='/login'
+              className={({ isActive }) =>
+                `transition-colors duration-200 ${
+                  isActive
+                    ? 'text-primary font-semibold underline underline-offset-4'
+                    : 'hover:text-primary'
+                }`
+              }
+            >
+              Login
+            </NavLink>
           </li>
           <li>
-            <Link to='/register'>Register</Link>
+            <NavLink
+              to='/register'
+              className={({ isActive }) =>
+                `transition-colors duration-200 ${
+                  isActive
+                    ? 'text-primary font-semibold underline underline-offset-4'
+                    : 'hover:text-primary'
+                }`
+              }
+            >
+              Register
+            </NavLink>
           </li>
         </>
       )}
@@ -79,13 +168,13 @@ const Navbar = () => {
 
         {/* User image + logo */}
         <div className='flex items-center gap-2'>
-          <Link to='/' className='btn btn-ghost text-xl font-bold'>
+          <NavLink to='/' className='btn btn-ghost text-xl font-bold'>
             🌾 KrishiLink
-          </Link>
+          </NavLink>
         </div>
       </div>
 
-      {/* Center - main nav links (for large screens) */}
+      {/* Center - main nav links */}
       <div className='navbar-center hidden lg:flex'>
         <ul className='menu menu-horizontal px-1'>{links}</ul>
       </div>
@@ -93,7 +182,7 @@ const Navbar = () => {
       {/* Right side - login/logout button */}
       <div className='navbar-end flex-row gap-6'>
         <label className='toggle text-base-content'>
-          <input type='checkbox' value='forest' className='theme-controller' />
+          <input type='checkbox' value='sunset' className='theme-controller' />
 
           <svg
             aria-label='sun'
@@ -143,13 +232,13 @@ const Navbar = () => {
           />
         )}
         {user ? (
-          <button onClick={handleLogout} className='btn btn-error btn-sm'>
+          <button onClick={handleLogout} className='btn btn-accent btn-md'>
             Logout
           </button>
         ) : (
-          <Link to='/login' className='btn btn-primary btn-sm '>
+          <NavLink to='/login' className='btn btn-primary btn-md'>
             Login
-          </Link>
+          </NavLink>
         )}
       </div>
     </div>

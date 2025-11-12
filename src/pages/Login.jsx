@@ -1,5 +1,7 @@
 import { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from '../contexts/AuthContext';
 
 const Login = () => {
@@ -7,26 +9,45 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state || '/';
+
+  const from = location.state?.from?.pathname || '/';
 
   const handleLogin = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
+
     try {
       await signInUser(email, password);
-      navigate(from, { replace: true });
+      toast.success('Login successful!', { autoClose: 1000 });
+      setError('');
+
+      // forced delay before redirect
+      setTimeout(() => {
+        navigate(from, { replace: true });
+      }, 1000);
     } catch (err) {
+      console.error(err);
       setError(err.message);
+      toast.error('Invalid credentials or network error!');
     }
   };
 
   const handleGoogle = async () => {
     try {
       await signInWithGoogle();
-      navigate(from, { replace: true });
+      toast.success('Logged in with Google! Redirecting...', {
+        autoClose: 1500,
+      });
+      setError('');
+
+      setTimeout(() => {
+        navigate(from, { replace: true });
+      }, 1500);
     } catch (err) {
+      console.error(err);
       setError(err.message);
+      toast.error('Google login failed!');
     }
   };
 
@@ -79,7 +100,6 @@ const Login = () => {
                 Login
               </button>
 
-              {/* Google Login button  */}
               <button
                 type='button'
                 onClick={handleGoogle}
@@ -93,7 +113,6 @@ const Login = () => {
                 Login with Google
               </button>
 
-              {/* Register link */}
               <p className='text-center text-sm mt-4'>
                 Not a user yet?{' '}
                 <Link
@@ -107,6 +126,7 @@ const Login = () => {
           </form>
         </div>
       </div>
+      <ToastContainer position='top-center' theme='colored' />
     </div>
   );
 };

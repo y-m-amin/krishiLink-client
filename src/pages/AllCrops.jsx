@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import CropCard from '../components/CropCard';
+import Loading from '../components/Loading';
 import { API_BASE_URL } from '../config';
 
 const AllCrops = () => {
@@ -54,7 +55,10 @@ const AllCrops = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className='input input-bordered w-full sm:w-72 focus:outline-none focus:ring focus:ring-primary'
         />
-        <button type='submit' className='btn btn-primary w-full sm:w-auto'>
+        <button
+          type='submit'
+          className='btn btn-primary w-full sm:w-auto hover:btn-secondary transition-all duration-400 ease-in-out text-white hover:text-base-100'
+        >
           Search
         </button>
       </form>
@@ -62,7 +66,7 @@ const AllCrops = () => {
       {/* Crop Grid */}
       {loading ? (
         <div className='flex justify-center'>
-          <span className='loading loading-spinner text-primary'></span>
+          <Loading />
         </div>
       ) : crops.length > 0 ? (
         <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6'>

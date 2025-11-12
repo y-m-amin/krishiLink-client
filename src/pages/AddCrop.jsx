@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
+import swal from 'sweetalert';
 import { API_BASE_URL } from '../config';
 import { AuthContext } from '../contexts/AuthContext';
 
@@ -45,8 +46,19 @@ const AddCrop = () => {
       });
 
       if (res.ok) {
-        alert('Crop added successfully!');
-        navigate('/my-posts');
+        // ✅ SweetAlert (v1) success message
+        swal({
+          title: 'Crop Added!',
+          text: `${cropData.quantity} ${cropData.unit} ${cropData.name} added successfully.`,
+          icon: 'success',
+          buttons: false, // hides default "OK" button
+          timer: 1500, // auto-close after 1.5s
+        });
+
+        // ⏱️ Delay before redirecting
+        setTimeout(() => {
+          navigate('/my-posts');
+        }, 400);
       } else {
         const data = await res.json();
         setError(data.message || 'Failed to add crop.');

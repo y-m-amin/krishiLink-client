@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
-import { useLoaderData, useParams } from 'react-router';
+import { Link, useLoaderData, useParams } from 'react-router';
+import swal from 'sweetalert';
 import { API_BASE_URL } from '../config';
 import { AuthContext } from '../contexts/AuthContext';
 
@@ -21,7 +22,26 @@ const CropDetails = () => {
 
   const handleInterestSubmit = async (e) => {
     e.preventDefault();
-    if (formData.quantity < 1) return alert('Quantity must be at least 1');
+
+    // ✅ Validate quantity
+    if (formData.quantity < 1) {
+      swal({
+        title: 'Invalid Quantity',
+        text: 'Quantity must be at least 1.',
+        icon: 'warning',
+      });
+      return;
+    }
+
+    // ✅ Validate available stock
+    if (formData.quantity > crop.quantity) {
+      swal({
+        title: 'Insufficient Quantity',
+        text: `Only ${crop.quantity} ${crop.unit} available.`,
+        icon: 'error',
+      });
+      return;
+    }
 
     const interest = {
       cropId: id,
@@ -32,29 +52,75 @@ const CropDetails = () => {
       status: 'pending',
     };
 
-    const res = await fetch(`${API_BASE_URL}/crops/${id}/interests`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(interest),
-    });
+    try {
+      const res = await fetch(`${API_BASE_URL}/crops/${id}/interests`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(interest),
+      });
 
-    if (res.ok) {
-      alert('Interest submitted!');
-      setInterestSent(true);
-    } else {
-      const err = await res.json();
-      alert(err.message || 'Something went wrong');
+      if (res.ok) {
+        swal({
+          title: 'Interest Submitted!',
+          text: `You expressed interest in ${formData.quantity} ${crop.unit} of ${crop.name}.`,
+          icon: 'success',
+          buttons: false,
+          timer: 1500,
+        });
+        setInterestSent(true);
+      } else {
+        const err = await res.json();
+        swal({
+          title: 'Error',
+          text: err.message || 'Something went wrong. Please try again.',
+          icon: 'error',
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      swal({
+        title: 'Network Error',
+        text: 'Failed to send your interest. Please try again later.',
+        icon: 'error',
+      });
     }
   };
 
   const handleAction = async (interestId, status, reduceQuantityBy) => {
+    const confirmAction = await swal({
+      title:
+        status === 'accepted'
+          ? 'Accept this interest?'
+          : 'Reject this interest?',
+      icon: 'warning',
+      buttons: ['Cancel', 'Yes'],
+      dangerMode: status === 'rejected',
+    });
+
+    if (!confirmAction) return;
+
     const res = await fetch(`${API_BASE_URL}/interests/${id}/${interestId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status, reduceQuantityBy }),
     });
 
-    if (res.ok) window.location.reload();
+    if (res.ok) {
+      swal({
+        title:
+          status === 'accepted' ? 'Interest Accepted' : 'Interest Rejected',
+        icon: status === 'accepted' ? 'success' : 'error',
+        buttons: false,
+        timer: 1200,
+      });
+      setTimeout(() => window.location.reload(), 400);
+    } else {
+      swal({
+        title: 'Error',
+        text: 'Failed to update interest status.',
+        icon: 'error',
+      });
+    }
   };
 
   if (!crop)
@@ -134,9 +200,13 @@ const CropDetails = () => {
             <input
               type='number'
               min={1}
+              max={crop.quantity}
               value={formData.quantity}
               onChange={(e) =>
-                setFormData({ ...formData, quantity: parseInt(e.target.value) })
+                setFormData({
+                  ...formData,
+                  quantity: parseInt(e.target.value) || 1,
+                })
               }
               className='input input-bordered input-accent w-full'
               placeholder={`Quantity (${crop.unit})`}
@@ -149,14 +219,14 @@ const CropDetails = () => {
                 setFormData({ ...formData, message: e.target.value })
               }
               className='input input-bordered input-accent w-full'
-              placeholder='Message to Seller'
+              placeholder='Message to Seller (optional)'
             />
             <p className='text-center font-semibold text-secondary md:col-span-2'>
               💰 Total Price: ৳{formData.quantity * crop.pricePerUnit}
             </p>
             <button
               type='submit'
-              className='btn btn-primary w-full md:col-span-2 mt-2'
+              className='btn btn-md btn-primary text-accent hover:text-white hover:btn-secondary transition-all duration-400 ease-in-out w-full md:col-span-2 mt-2'
             >
               Submit Interest
             </button>
@@ -164,10 +234,16 @@ const CropDetails = () => {
         </div>
       )}
 
-      {/* Already sent message */}
+      {/* Already Sent Message */}
       {!isOwner && interestSent && (
         <p className='text-success text-center font-medium mt-8'>
-          ✅ You’ve already sent an interest for this crop.
+          ✅ You’ve already sent an interest for this crop.{' '}
+          <Link
+            to='/my-interests'
+            className='underline text-primary hover:text-secondary'
+          >
+            Click here to check your interests.
+          </Link>{' '}
         </p>
       )}
 

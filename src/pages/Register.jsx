@@ -1,5 +1,7 @@
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { API_BASE_URL } from '../config';
 import { AuthContext } from '../contexts/AuthContext';
 
@@ -17,9 +19,11 @@ const Register = () => {
 
     const passValid = /(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(password);
     if (!passValid) {
-      return setError(
+      setError(
         'Password must contain uppercase, lowercase and be at least 6 characters long'
       );
+      toast.error('Weak password! Please follow the password rules.');
+      return;
     }
 
     try {
@@ -29,9 +33,19 @@ const Register = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, photo }),
       });
-      navigate('/');
+
+      toast.success('Registration successful!', {
+        autoClose: 1000,
+      });
+      setError('');
+
+      setTimeout(() => {
+        navigate('/');
+      }, 500);
     } catch (err) {
+      console.error(err);
       setError(err.message);
+      toast.error('Registration failed! Please try again.');
     }
   };
 
@@ -51,9 +65,18 @@ const Register = () => {
         body: JSON.stringify(newUser),
       });
 
-      navigate('/');
+      toast.success('Registered with Google!', {
+        autoClose: 1000,
+      });
+      setError('');
+
+      setTimeout(() => {
+        navigate('/');
+      }, 500);
     } catch (err) {
+      console.error(err);
       setError(err.message);
+      toast.error('Google registration failed!');
     }
   };
 
@@ -132,7 +155,6 @@ const Register = () => {
                 Register with Google
               </button>
 
-              {/* Login link */}
               <p className='text-center text-sm mt-4'>
                 Already a user?{' '}
                 <Link to='/login' className='link link-primary font-semibold'>
@@ -143,6 +165,7 @@ const Register = () => {
           </form>
         </div>
       </div>
+      <ToastContainer position='top-center' theme='colored' />
     </div>
   );
 };

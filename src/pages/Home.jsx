@@ -13,6 +13,7 @@ import howImg2 from '../assets/howImg2.png';
 import howImg3 from '../assets/howImg3.png';
 import howImg4 from '../assets/howImg4.png';
 import CropCard from '../components/CropCard';
+import Loading from '../components/Loading';
 import { API_BASE_URL } from '../config';
 
 const HERO_SLIDES = [
@@ -179,7 +180,7 @@ const Home = () => {
         </div>
 
         {loading ? (
-          <p className='text-center text-gray-500'>Loading crops...</p>
+          <Loading />
         ) : (
           <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6'>
             {latestCrops.map((crop) => (

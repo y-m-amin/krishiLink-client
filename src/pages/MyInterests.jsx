@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router';
+import Loading from '../components/Loading';
 import { API_BASE_URL } from '../config';
 import { AuthContext } from '../contexts/AuthContext';
 
@@ -7,6 +8,7 @@ const MyInterests = () => {
   const { user } = useContext(AuthContext);
   const [interests, setInterests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sortOption, setSortOption] = useState('');
 
   useEffect(() => {
     if (!user?.email) return;
@@ -15,7 +17,6 @@ const MyInterests = () => {
       .then((res) => res.json())
       .then((data) => {
         setInterests(data);
-        console.log('My interests data:', data);
         setLoading(false);
       })
       .catch((err) => {
@@ -24,12 +25,78 @@ const MyInterests = () => {
       });
   }, [user]);
 
+  // 🔽 sorting logic
+  const handleSort = (option) => {
+    setSortOption(option);
+
+    const sorted = [...interests].sort((a, b) => {
+      switch (option) {
+        case 'cropNameAsc':
+          return (a.cropName || '').localeCompare(b.cropName || '');
+        case 'cropNameDesc':
+          return (b.cropName || '').localeCompare(a.cropName || '');
+        case 'statusAsc':
+          return (a.status || '').localeCompare(b.status || '');
+        case 'statusDesc':
+          return (b.status || '').localeCompare(a.status || '');
+        case 'qtyAsc':
+          return (a.quantity || 0) - (b.quantity || 0);
+        case 'qtyDesc':
+          return (b.quantity || 0) - (a.quantity || 0);
+        default:
+          return 0;
+      }
+    });
+
+    setInterests(sorted);
+  };
+
   return (
     <div className='p-6 w-5/7 mx-auto'>
-      <h2 className='text-2xl font-bold mb-4'>My Interests</h2>
+      <div className='flex flex-col sm:flex-row justify-between items-center mb-4 gap-3'>
+        <h2 className='text-4xl font-bold text-primary'>My Interests</h2>
+
+        {/* Sort Dropdown */}
+        <div className='dropdown dropdown-end'>
+          <div
+            tabIndex={0}
+            role='button'
+            className='btn btn-outline btn-sm m-1'
+          >
+            Sort
+          </div>
+          <ul
+            tabIndex={0}
+            className='dropdown-content menu bg-base-100 rounded-box w-52 p-2 shadow'
+          >
+            <li>
+              <button onClick={() => handleSort('cropNameAsc')}>
+                Crop Name ↑
+              </button>
+            </li>
+            <li>
+              <button onClick={() => handleSort('cropNameDesc')}>
+                Crop Name ↓
+              </button>
+            </li>
+            <li>
+              <button onClick={() => handleSort('statusAsc')}>Status ↑</button>
+            </li>
+            <li>
+              <button onClick={() => handleSort('statusDesc')}>Status ↓</button>
+            </li>
+            <li>
+              <button onClick={() => handleSort('qtyAsc')}>Quantity ↑</button>
+            </li>
+            <li>
+              <button onClick={() => handleSort('qtyDesc')}>Quantity ↓</button>
+            </li>
+          </ul>
+        </div>
+      </div>
 
       {loading ? (
-        <p>Loading...</p>
+        <Loading />
       ) : interests.length === 0 ? (
         <p>No interests sent yet.</p>
       ) : (
@@ -43,7 +110,7 @@ const MyInterests = () => {
               key={i}
               className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 hover:bg-base-200 transition'
             >
-              {/* Left side: crop info */}
+              {/*  crop info */}
               <div className='flex-1'>
                 <Link
                   to={`/crops/${item.cropId}`}
@@ -57,7 +124,7 @@ const MyInterests = () => {
                 <p className='text-sm mt-1'>{item.message}</p>
               </div>
 
-              {/* Right side: status */}
+              {/*  status */}
               <div className='flex justify-between sm:justify-end items-center w-full sm:w-auto'>
                 <span
                   className={`badge text-sm font-semibold px-3 py-2 ${

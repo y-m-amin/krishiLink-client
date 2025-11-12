@@ -40,7 +40,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      console.log('current user', currentUser);
+      //console.log('current user', currentUser);
 
       if (currentUser) {
         const userInfo = {
@@ -49,7 +49,7 @@ const AuthProvider = ({ children }) => {
           photo: currentUser.photoURL || '',
         };
 
-        // 🔹 Ensure user exists in backend (for Google sign-in)
+        //Ensure user exists in backend (for Google sign-in)
         fetch(`${API_BASE_URL}/users`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -57,7 +57,7 @@ const AuthProvider = ({ children }) => {
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log('User synced to backend:', data);
+            //console.log('User synced to backend:', data);
           })
           .catch((err) => console.error('Error syncing Google user:', err));
 

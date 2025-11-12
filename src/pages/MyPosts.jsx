@@ -2,6 +2,8 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { FiEdit } from 'react-icons/fi';
 import { RiDeleteBinFill } from 'react-icons/ri';
 import { Link } from 'react-router';
+import swal from 'sweetalert';
+import Loading from '../components/Loading';
 import { API_BASE_URL } from '../config';
 import { AuthContext } from '../contexts/AuthContext';
 
@@ -11,7 +13,6 @@ const MyPosts = () => {
   const [editingCrop, setEditingCrop] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // ✅ useCallback to fix React Hook warning
   const fetchMyCrops = useCallback(() => {
     if (!user?.email) return;
     setLoading(true);
@@ -31,13 +32,36 @@ const MyPosts = () => {
   }, [fetchMyCrops]);
 
   const handleDelete = async (id) => {
-    if (!confirm('Are you sure you want to delete this crop?')) return;
+    const crop = crops.find((c) => c._id === id);
+    const confirmDelete = await swal({
+      title: 'Are you sure?',
+      text: `Delete ${crop?.quantity} ${crop?.unit} ${crop?.name}? This action cannot be undone.`,
+      icon: 'warning',
+      buttons: ['Cancel', 'Delete'],
+      dangerMode: true,
+    });
+
+    if (!confirmDelete) return;
+
     const res = await fetch(`${API_BASE_URL}/crops/${id}`, {
       method: 'DELETE',
     });
+
     if (res.ok) {
-      alert('Deleted successfully');
+      swal({
+        title: 'Deleted!',
+        text: `${crop?.name} was removed successfully.`,
+        icon: 'success',
+        timer: 1500,
+        buttons: false,
+      });
       setCrops(crops.filter((crop) => crop._id !== id));
+    } else {
+      swal({
+        title: 'Error!',
+        text: 'Failed to delete crop. Try again later.',
+        icon: 'error',
+      });
     }
   };
 
@@ -62,23 +86,33 @@ const MyPosts = () => {
     });
 
     if (res.ok) {
-      alert('Crop updated!');
+      swal({
+        title: 'Updated!',
+        text: `${updated.name} data updated successfully.`,
+        icon: 'success',
+        timer: 1500,
+        buttons: false,
+      });
 
       const modal = document.getElementById('edit_modal');
       modal.close();
-
       setTimeout(() => setEditingCrop(null), 150);
-
       fetchMyCrops();
+    } else {
+      swal({
+        title: 'Error!',
+        text: 'Failed to update crop.',
+        icon: 'error',
+      });
     }
   };
 
   return (
     <div className='p-6 w-5/7 mx-auto'>
-      <h2 className='text-2xl font-bold mb-4'>My Crop Posts</h2>
+      <h2 className='text-4xl font-bold text-primary mb-4'>My Crop Posts</h2>
 
       {loading ? (
-        <p>Loading...</p>
+        <Loading />
       ) : crops.length === 0 ? (
         <p>No crops posted yet.</p>
       ) : (
