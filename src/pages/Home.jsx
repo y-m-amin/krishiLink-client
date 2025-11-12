@@ -195,7 +195,7 @@ const Home = () => {
 
       {/* HOW IT WORKS */}
       <section className='max-w-6xl m-3  md:mx-auto'>
-        <h2 className='text-4xl md:text-5xl font-bold text-primary text-center my-10'>
+        <h2 className='text-4xl  font-bold text-primary text-center my-10'>
           How It Works
         </h2>
         <div className='flex flex-col gap-16'>
@@ -227,7 +227,7 @@ const Home = () => {
 
       {/*  BLOG SECTION */}
       <section className='max-w-7xl mx-3 my-10 md:mx-auto '>
-        <h2 className='text-4xl font-bold text-primary text-center mb-10'>
+        <h2 className='text-4xl font-bold text-primary text-center my-10'>
           Agro News & Tips
         </h2>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'>
