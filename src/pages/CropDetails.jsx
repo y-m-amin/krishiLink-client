@@ -129,7 +129,7 @@ const CropDetails = () => {
   return (
     <div className='min-h-screen bg-base-200 py-10'>
       {/* Crop Details Card */}
-      <div className='max-w-6xl mx-auto bg-base-100 shadow-xl rounded-2xl overflow-hidden flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300'>
+      <div className='max-w-6xl mx-3 md:mx-auto bg-base-100 shadow-xl rounded-2xl overflow-hidden flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300'>
         {/* Image Section */}
         <div className='md:w-1/2 relative'>
           <img
@@ -189,7 +189,7 @@ const CropDetails = () => {
 
       {/* Interest Form for Buyers */}
       {!isOwner && user && !interestSent && (
-        <div className='max-w-4xl mx-auto mt-10 bg-base-100 rounded-2xl shadow-md p-6'>
+        <div className='max-w-4xl mx-3 md:mx-auto mt-10 bg-base-100 rounded-2xl shadow-md p-6'>
           <h3 className='text-2xl font-semibold text-center text-primary mb-4'>
             💬 Send Your Interest
           </h3>
@@ -249,7 +249,7 @@ const CropDetails = () => {
 
       {/* Interests Table for Owner */}
       {isOwner && (
-        <div className='max-w-6xl mx-auto bg-base-100 rounded-2xl shadow-md p-6 mt-10'>
+        <div className='max-w-6xl mx-3 md:mx-auto bg-base-100 rounded-2xl shadow-md p-6 mt-10'>
           <h3 className='text-2xl font-semibold text-primary mb-4'>
             📥 Received Interests
           </h3>
