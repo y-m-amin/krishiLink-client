@@ -9,7 +9,7 @@ const Navbar = () => {
     signOutUser().catch(console.error);
   };
 
-  // 🔹 Common links with active styling
+  // Common links with active styling
   const links = (
     <>
       <li>
@@ -18,7 +18,7 @@ const Navbar = () => {
           className={({ isActive }) =>
             `transition-colors duration-200 ${
               isActive
-                ? 'text-primary font-semibold underline underline-offset-4'
+                ? 'text-primary font-bold underline underline-offset-4'
                 : 'hover:text-primary'
             }`
           }
@@ -33,7 +33,7 @@ const Navbar = () => {
           className={({ isActive }) =>
             `transition-colors duration-200 ${
               isActive
-                ? 'text-primary font-semibold underline underline-offset-4'
+                ? 'text-primary font-bold underline underline-offset-4'
                 : 'hover:text-primary'
             }`
           }
@@ -50,7 +50,7 @@ const Navbar = () => {
               className={({ isActive }) =>
                 `transition-colors duration-200 ${
                   isActive
-                    ? 'bg-primary text-white font-semibold rounded-md px-3 py-1'
+                    ? 'bg-primary text-white font-bold rounded-md px-3 py-1'
                     : 'hover:text-primary'
                 }`
               }
@@ -64,7 +64,7 @@ const Navbar = () => {
               className={({ isActive }) =>
                 `transition-colors duration-200 ${
                   isActive
-                    ? 'bg-primary text-white font-semibold rounded-md px-3 mx-2 py-1'
+                    ? 'bg-primary text-white font-bold rounded-md px-3 mx-2 py-1'
                     : 'hover:text-primary'
                 }`
               }
@@ -78,7 +78,7 @@ const Navbar = () => {
               className={({ isActive }) =>
                 `transition-colors duration-200 ${
                   isActive
-                    ? 'bg-primary text-white font-semibold rounded-md px-3 mx-2 py-1'
+                    ? 'bg-primary text-white font-bold rounded-md px-3 mx-2 py-1'
                     : 'hover:text-primary'
                 }`
               }
@@ -92,7 +92,7 @@ const Navbar = () => {
               className={({ isActive }) =>
                 `transition-colors duration-200 ${
                   isActive
-                    ? 'bg-primary text-white font-semibold rounded-md mx-2 px-2 py-1'
+                    ? 'bg-primary text-white font-bold rounded-md mx-2 px-2 py-1'
                     : 'hover:text-primary'
                 }`
               }
@@ -109,7 +109,7 @@ const Navbar = () => {
               className={({ isActive }) =>
                 `transition-colors duration-200 ${
                   isActive
-                    ? 'text-primary font-semibold underline underline-offset-4'
+                    ? 'text-primary font-bold underline underline-offset-4'
                     : 'hover:text-primary'
                 }`
               }
@@ -123,7 +123,7 @@ const Navbar = () => {
               className={({ isActive }) =>
                 `transition-colors duration-200 ${
                   isActive
-                    ? 'text-primary font-semibold underline underline-offset-4'
+                    ? 'text-primary font-bold underline underline-offset-4'
                     : 'hover:text-primary'
                 }`
               }

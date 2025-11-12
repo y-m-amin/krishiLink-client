@@ -44,7 +44,7 @@ const Home = () => {
       <HeroSlider />
 
       {/* LATEST CROPS */}
-      <section className='max-w-7xl m-3  md:mx-auto'>
+      <section className='max-w-7xl m-3   xl:mx-auto'>
         <div className='flex justify-between items-center mb-6'>
           <h2 className='text-4xl font-bold text-primary'>Latest Crops</h2>
           <Link
@@ -73,7 +73,7 @@ const Home = () => {
       <Blogs />
 
       {/* WHY KRISHILINK */}
-      <section className='bg-base-200 rounded-2xl py-10 px-6 max-w-7xl mx-3 my-10 md:mx-auto shadow-md'>
+      <section className='bg-base-200 rounded-2xl py-10 px-6 max-w-7xl mx-3 my-10 xl:mx-auto shadow-md'>
         <h2 className='text-4xl font-bold text-primary mb-4'>
           Why KrishiLink?
         </h2>

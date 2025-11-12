@@ -37,7 +37,7 @@ const HowTo = () => {
   return (
     <>
       {' '}
-      <section className='max-w-6xl m-3  md:mx-auto'>
+      <section className='max-w-6xl m-3  xl:mx-auto'>
         <h2 className='text-4xl  font-bold text-primary text-center my-10'>
           How It Works
         </h2>

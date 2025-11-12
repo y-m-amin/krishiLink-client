@@ -25,7 +25,7 @@ const BLOGS = [
 const Blogs = () => {
   return (
     <>
-      <section className='max-w-7xl mx-3 my-10 md:mx-auto '>
+      <section className='max-w-7xl mx-3 my-10 xl:mx-auto '>
         <h2 className='text-4xl font-bold text-primary text-center my-10'>
           Agro News & Tips
         </h2>
