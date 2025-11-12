@@ -36,6 +36,15 @@ const AllCrops = () => {
     fetchCrops(searchTerm.trim());
   };
 
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+
+    if (value.trim() === '') {
+      fetchCrops();
+    }
+  };
+
   return (
     <div className='p-6 max-w-6xl mx-auto'>
       {/* Heading */}
@@ -52,7 +61,7 @@ const AllCrops = () => {
           type='text'
           placeholder='Search crops...'
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleSearchChange}
           className='input input-bordered w-full sm:w-72 focus:outline-none focus:ring focus:ring-primary'
         />
         <button

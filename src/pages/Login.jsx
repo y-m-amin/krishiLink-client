@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link, useLocation, useNavigate } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -6,11 +7,21 @@ import { AuthContext } from '../contexts/AuthContext';
 
 const Login = () => {
   const { signInUser, signInWithGoogle } = useContext(AuthContext);
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const from = location.state?.from?.pathname || '/';
+
+  const formatFirebaseError = (message) => {
+    const match = message.match(/\(auth\/([^)]+)\)/);
+    return match ? `auth/${match[1]}` : message;
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,14 +33,14 @@ const Login = () => {
       toast.success('Login successful!', { autoClose: 1000 });
       setError('');
 
-      // forced delay before redirect
       setTimeout(() => {
         navigate(from, { replace: true });
       }, 1000);
     } catch (err) {
       console.error(err);
-      setError(err.message);
-      toast.error('Invalid credentials or network error!');
+      const cleanError = formatFirebaseError(err.message);
+      setError(cleanError);
+      toast.error(cleanError, { autoClose: 2500 });
     }
   };
 
@@ -46,8 +57,9 @@ const Login = () => {
       }, 1500);
     } catch (err) {
       console.error(err);
-      setError(err.message);
-      toast.error('Google login failed!');
+      const cleanError = formatFirebaseError(err.message);
+      setError(cleanError);
+      toast.error(cleanError, { autoClose: 2500 });
     }
   };
 
@@ -77,13 +89,23 @@ const Login = () => {
               />
 
               <label className='label font-semibold'>Password</label>
-              <input
-                name='password'
-                type='password'
-                placeholder='Password'
-                className='input input-bordered w-full'
-                required
-              />
+              <div className='relative'>
+                <input
+                  name='password'
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder='Password'
+                  className='input input-bordered w-full pr-10 focus:pr-10 relative z-0'
+                  required
+                />
+                <button
+                  type='button'
+                  onClick={togglePasswordVisibility}
+                  className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 z-10'
+                  tabIndex={-1}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
 
               <div>
                 <a className='link link-hover text-sm text-primary'>
@@ -91,7 +113,12 @@ const Login = () => {
                 </a>
               </div>
 
-              {error && <p className='text-red-500 text-sm'>{error}</p>}
+              {/* Error Message */}
+              {error && (
+                <p className='text-red-500 text-sm font-medium text-center bg-red-50 border border-red-200 rounded-md py-2'>
+                  {error}
+                </p>
+              )}
 
               <button
                 type='submit'
@@ -103,7 +130,7 @@ const Login = () => {
               <button
                 type='button'
                 onClick={handleGoogle}
-                className='btn btn-outline btn-secondary w-full mt-2'
+                className='btn btn-outline btn-secondary w-full mt-2 flex items-center justify-center'
               >
                 <img
                   src='https://www.svgrepo.com/show/475656/google-color.svg'
