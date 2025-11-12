@@ -65,7 +65,7 @@ Follow these steps to run the KrishiLink client on your local machine:
 
 ```bash
 # 1️⃣ Clone the repository
-git clone https://github.com/your-username/krishilink-client.git
+git clone https://github.com/y-m-amin/krishiLink-client.git
 
 # 2️⃣ Navigate into the project directory
 cd krishilink-client
