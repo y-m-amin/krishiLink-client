@@ -25,7 +25,7 @@ const MyInterests = () => {
       });
   }, [user]);
 
-  // 🔽 sorting logic
+  // sorting logic
   const handleSort = (option) => {
     setSortOption(option);
 
@@ -61,7 +61,7 @@ const MyInterests = () => {
           <div
             tabIndex={0}
             role='button'
-            className='btn btn-outline btn-sm m-1'
+            className='btn btn-outline btn-primary btn-md m-1 hover:text-white'
           >
             Sort
           </div>

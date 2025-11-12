@@ -52,7 +52,7 @@ const CropCard = ({ crop }) => {
         <div className='card-actions justify-end mt-4'>
           <Link
             to={`/crops/${_id}`}
-            className='btn btn-md btn-primary text-white hover:text-base-100 hover:btn-secondary transition-all duration-400 ease-in-out'
+            className='btn btn-md btn-primary text-white hover:text-neutral hover:btn-accent transition-all duration-400 ease-in-out'
           >
             View Details
           </Link>

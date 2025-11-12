@@ -196,7 +196,10 @@ const AddCrop = () => {
             {error && <p className='text-error col-span-2'>{error}</p>}
 
             <div className='form-control mt-4 col-span-1 md:col-span-2'>
-              <button type='submit' className='btn btn-primary w-full'>
+              <button
+                type='submit'
+                className='btn btn-primary text-white hover:text-neutral hover:btn-accent transition-all duration-400 ease-in-out w-full'
+              >
                 Add Crop
               </button>
             </div>

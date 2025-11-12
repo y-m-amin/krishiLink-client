@@ -57,7 +57,7 @@ const AllCrops = () => {
         />
         <button
           type='submit'
-          className='btn btn-primary w-full sm:w-auto hover:btn-secondary transition-all duration-400 ease-in-out text-white hover:text-base-100'
+          className='btn btn-primary w-full sm:w-auto text-white hover:text-neutral hover:btn-accent transition-all duration-400 ease-in-out'
         >
           Search
         </button>

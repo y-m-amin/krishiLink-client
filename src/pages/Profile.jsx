@@ -88,7 +88,10 @@ const Profile = () => {
             {error && <p className='text-error text-sm'>{error}</p>}
 
             <div className='form-control mt-4'>
-              <button type='submit' className='btn btn-primary w-full'>
+              <button
+                type='submit'
+                className='btn btn-primary text-white hover:text-neutral hover:btn-accent transition-all duration-400 ease-in-out  w-full'
+              >
                 Update Profile
               </button>
             </div>

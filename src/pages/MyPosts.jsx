@@ -232,7 +232,7 @@ const MyPosts = () => {
               />
 
               <div className='modal-action'>
-                <button type='submit' className='btn btn-success text-white'>
+                <button type='submit' className='btn btn-primary text-white'>
                   Save
                 </button>
                 <button

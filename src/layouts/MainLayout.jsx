@@ -10,7 +10,9 @@ const MainLayout = () => {
 
   return (
     <>
-      <Navbar />
+      <div className='sticky top-0 z-50 bg-base-100 shadow-sm'>
+        <Navbar />
+      </div>
       <main className='min-h-screen '>
         <Outlet />
       </main>

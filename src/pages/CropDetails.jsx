@@ -221,12 +221,12 @@ const CropDetails = () => {
               className='input input-bordered input-accent w-full'
               placeholder='Message to Seller (optional)'
             />
-            <p className='text-center font-semibold text-secondary md:col-span-2'>
-              💰 Total Price: ৳{formData.quantity * crop.pricePerUnit}
+            <p className='text-center font-bold text-secondary md:col-span-2'>
+              Total Price: ৳{formData.quantity * crop.pricePerUnit}
             </p>
             <button
               type='submit'
-              className='btn btn-md btn-primary text-accent hover:text-white hover:btn-secondary transition-all duration-400 ease-in-out w-full md:col-span-2 mt-2'
+              className='btn btn-md btn-primary text-white hover:text-neutral hover:btn-accent transition-all duration-400 ease-in-out w-full md:col-span-2 mt-2'
             >
               Submit Interest
             </button>
