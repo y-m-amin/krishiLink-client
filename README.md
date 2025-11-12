@@ -85,3 +85,10 @@ VITE_FIREBASE_API_KEY=your_firebase_api_key_here
 npm run dev
 # or
 yarn dev
+```
+
+## 🌐 Live Demo Link
+
+You can visit the live deployed version of KrishiLink here:
+
+👉 [KrishiLink](https://krishilink-e2675.web.app/)
