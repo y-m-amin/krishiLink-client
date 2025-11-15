@@ -232,11 +232,11 @@ const Navbar = () => {
           />
         )}
         {user ? (
-          <button onClick={handleLogout} className='btn btn-accent btn-md'>
+          <button onClick={handleLogout} className='btn btn-accent btn-md text-white'>
             Logout
           </button>
         ) : (
-          <NavLink to='/login' className='btn btn-primary btn-md'>
+          <NavLink to='/login' className='btn btn-primary btn-md text-white'>
             Login
           </NavLink>
         )}
