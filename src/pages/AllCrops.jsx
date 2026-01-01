@@ -18,7 +18,7 @@ const AllCrops = () => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        setCrops(data);
+        setCrops(data.data);
         setLoading(false);
       })
       .catch((err) => {

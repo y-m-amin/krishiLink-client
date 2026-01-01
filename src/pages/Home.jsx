@@ -19,7 +19,7 @@ const Home = () => {
     fetch(`${API_BASE_URL}/latest-crops`)
       .then((res) => res.json())
       .then((data) => {
-        setLatestCrops(data);
+        setLatestCrops(data.data);
         setLoading(false);
       })
       .catch((err) => {

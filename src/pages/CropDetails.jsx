@@ -133,8 +133,8 @@ const CropDetails = () => {
         {/* Image Section */}
         <div className='md:w-1/2 relative'>
           <img
-            src={crop.image}
-            alt={crop.name}
+            src={crop.data.image}
+            alt={crop.data.name}
             className='w-full h-80 md:h-full object-cover'
           />
           {crop.isNew && (
@@ -146,24 +146,24 @@ const CropDetails = () => {
 
         {/* Crop Info */}
         <div className='flex-1 p-6 space-y-4'>
-          <h2 className='text-3xl font-bold text-primary'>{crop.name}</h2>
+          <h2 className='text-3xl font-bold text-primary'>{crop.data.name}</h2>
 
           <div className='grid grid-cols-1 sm:grid-cols-2 gap-3 text-base'>
             <p>
               <span className='font-semibold text-accent'>Type:</span>{' '}
-              {crop.type}
+              {crop.data.type}
             </p>
             <p>
               <span className='font-semibold text-accent'>Price:</span> ৳
-              {crop.pricePerUnit}/{crop.unit}
+              {crop.data.pricePerUnit}/{crop.data.unit}
             </p>
             <p>
               <span className='font-semibold text-accent'>Quantity:</span>{' '}
-              {crop.quantity} {crop.unit}
+              {crop.data.quantity} {crop.data.unit}
             </p>
             <p>
               <span className='font-semibold text-accent'>Location:</span>{' '}
-              {crop.location}
+              {crop.data.location}
             </p>
           </div>
 
@@ -171,17 +171,17 @@ const CropDetails = () => {
             <p className='font-semibold text-secondary'>
               Seller:{' '}
               <span className='font-normal text-base-content'>
-                {crop.owner?.ownerName}
+                {crop.data.owner?.ownerName}
               </span>
             </p>
             <p className='text-sm text-base-content/70'>
-              {crop.owner?.ownerEmail}
+              {crop.data.owner?.ownerEmail}
             </p>
           </div>
 
           {crop.description && (
             <p className='mt-3 text-base-content/80 leading-relaxed'>
-              {crop.description}
+              {crop.data.description}
             </p>
           )}
         </div>
