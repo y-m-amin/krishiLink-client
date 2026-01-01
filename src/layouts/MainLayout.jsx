@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from 'react-router';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
+import ScrollToTop from '../utils/ScrollTop';
 
 const MainLayout = () => {
   const location = useLocation();
@@ -11,6 +12,7 @@ const MainLayout = () => {
   return (
     <>
       <div className='sticky top-0 z-50 bg-base-100 shadow-sm'>
+        <ScrollToTop />
         <Navbar />
       </div>
       <main className='min-h-screen '>

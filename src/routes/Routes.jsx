@@ -28,11 +28,7 @@ const router = createBrowserRouter([
       // Private routes
       {
         path: '/crops/:id',
-        element: (
-          <PrivateRoute>
-            <CropDetails />
-          </PrivateRoute>
-        ),
+        element: <CropDetails />,
         loader: async ({ params }) => {
           const res = await fetch(`${API_BASE_URL}/crops/${params.id}`);
           if (!res.ok) {
