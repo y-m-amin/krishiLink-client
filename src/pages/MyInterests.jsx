@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router';
+import instance from '../api/axios';
 import Loading from '../components/Loading';
-import { API_BASE_URL } from '../config';
 import { AuthContext } from '../contexts/AuthContext';
 
 const MyInterests = () => {
@@ -11,12 +11,12 @@ const MyInterests = () => {
   const [sortOption, setSortOption] = useState('');
 
   useEffect(() => {
-    if (!user?.email) return;
+    if (!user) return;
 
-    fetch(`${API_BASE_URL}/my-interests?email=${user.email}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setInterests(data);
+    instance
+      .get('/my-interests')
+      .then((res) => {
+        setInterests(res.data.data || []);
         setLoading(false);
       })
       .catch((err) => {
@@ -97,7 +97,7 @@ const MyInterests = () => {
 
       {loading ? (
         <Loading />
-      ) : interests.length === 0 ? (
+      ) : !Array.isArray(interests) || interests.length === 0 ? (
         <p>No interests sent yet.</p>
       ) : (
         <ul className='list bg-base-100 rounded-box shadow-md divide-y divide-base-300'>
@@ -119,13 +119,13 @@ const MyInterests = () => {
                   {item.cropName || 'Unknown Crop'}
                 </Link>
                 <div className='text-xs uppercase font-semibold opacity-60'>
-                  Qty: {item.quantity} • Owner: {item.owner}
+                  Qty: {item.quantity} • Owner: {item.sellerName}
                 </div>
-                <p className='text-sm mt-1'>{item.message}</p>
+                <p className='text-sm mt-1'>{item.message || ''}</p>
               </div>
 
-              {/*  status */}
-              <div className='flex justify-between sm:justify-end items-center w-full sm:w-auto'>
+              {/* status + payment */}
+              <div className='flex flex-col sm:flex-row gap-2 items-end sm:items-center'>
                 <span
                   className={`badge text-sm font-semibold px-3 py-2 ${
                     item.status === 'pending'
@@ -135,10 +135,27 @@ const MyInterests = () => {
                       : 'badge-error text-red-900'
                   }`}
                 >
-                  {item.status
-                    ? item.status.charAt(0).toUpperCase() + item.status.slice(1)
-                    : 'Unknown'}
+                  {item.status?.charAt(0).toUpperCase() + item.status?.slice(1)}
                 </span>
+
+                {item.status === 'accepted' &&
+                  item.paymentStatus === 'unpaid' && (
+                    <button
+                      onClick={async () => {
+                        const res = await instance.post('/payments/create', {
+                          amount: item.totalAmount * 100,
+                          cropId: item.cropId,
+                          interestId: item.interestId,
+                          sellerId: item.sellerId,
+                        });
+
+                        window.location.href = res.data.url;
+                      }}
+                      className='btn btn-sm btn-primary ml-2'
+                    >
+                      Pay Now
+                    </button>
+                  )}
               </div>
             </li>
           ))}

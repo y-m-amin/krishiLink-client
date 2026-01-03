@@ -78,7 +78,7 @@ const AllCrops = () => {
           <Loading />
         </div>
       ) : crops.length > 0 ? (
-        <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6'>
+        <div className='grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6 mx-15 md:mx-2'>
           {crops.map((crop) => (
             <CropCard key={crop._id} crop={crop} />
           ))}

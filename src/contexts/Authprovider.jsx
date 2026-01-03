@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
@@ -49,20 +50,18 @@ const AuthProvider = ({ children }) => {
           photo: currentUser.photoURL || '',
         };
 
-        //Ensure user exists in backend (for Google sign-in)
-        fetch(`${API_BASE_URL}/users`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(userInfo),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            //console.log('User synced to backend:', data);
-          })
-          .catch((err) => console.error('Error syncing Google user:', err));
+        // Ensure user exists
+        axios.post(`${API_BASE_URL}/users`, userInfo).catch(() => {});
 
-        // 🔹 (Optional) handle token storage if backend supports it
-        // localStorage.setItem('token', data.token);
+        //  Get JWT from backend
+        axios
+          .post(`${API_BASE_URL}/jwt`, { email: currentUser.email })
+          .then((res) => {
+            localStorage.setItem('token', res.data.token);
+          })
+          .catch((err) => {
+            console.error('JWT error:', err);
+          });
       } else {
         localStorage.removeItem('token');
       }

@@ -10,6 +10,8 @@ import Home from '../pages/Home';
 import Login from '../pages/Login';
 import MyInterests from '../pages/MyInterests';
 import MyPosts from '../pages/MyPosts';
+import PaymentFailed from '../pages/PaymentFailed';
+import PaymentSuccess from '../pages/PaymentSuccess';
 import Profile from '../pages/Profile';
 import Register from '../pages/Register';
 import PrivateRoute from './PrivateRoute';
@@ -66,6 +68,23 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <Profile />
+          </PrivateRoute>
+        ),
+      },
+
+      {
+        path: '/payment-success',
+        element: (
+          <PrivateRoute>
+            <PaymentSuccess />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: '/payment-failed',
+        element: (
+          <PrivateRoute>
+            <PaymentFailed />
           </PrivateRoute>
         ),
       },

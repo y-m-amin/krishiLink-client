@@ -3,8 +3,8 @@ import { FiEdit } from 'react-icons/fi';
 import { RiDeleteBinFill } from 'react-icons/ri';
 import { Link } from 'react-router';
 import swal from 'sweetalert';
+import instance from '../api/axios';
 import Loading from '../components/Loading';
-import { API_BASE_URL } from '../config';
 import { AuthContext } from '../contexts/AuthContext';
 
 const MyPosts = () => {
@@ -16,15 +16,13 @@ const MyPosts = () => {
   const fetchMyCrops = useCallback(() => {
     if (!user?.email) return;
     setLoading(true);
-    fetch(`${API_BASE_URL}/crops`)
-      .then((res) => res.json())
-      .then((data) => {
-        const myCrops = data.filter(
-          (crop) => crop.owner?.ownerEmail === user.email
-        );
-        setCrops(myCrops);
-        setLoading(false);
-      });
+    instance.get('/crops').then((res) => {
+      const myCrops = (res.data.data || []).filter(
+        (crop) => crop.owner?.ownerEmail === user.email
+      );
+      setCrops(myCrops);
+      setLoading(false);
+    });
   }, [user?.email]);
 
   useEffect(() => {
@@ -43,11 +41,9 @@ const MyPosts = () => {
 
     if (!confirmDelete) return;
 
-    const res = await fetch(`${API_BASE_URL}/crops/${id}`, {
-      method: 'DELETE',
-    });
+    const res = await instance.delete(`/crops/${id}`);
 
-    if (res.ok) {
+    if (res.data?.success) {
       swal({
         title: 'Deleted!',
         text: `${crop?.name} was removed successfully.`,
@@ -79,13 +75,9 @@ const MyPosts = () => {
       image: form.image.value,
     };
 
-    const res = await fetch(`${API_BASE_URL}/crops/${editingCrop._id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updated),
-    });
+    const res = await instance.patch(`/crops/${editingCrop._id}`, updated);
 
-    if (res.ok) {
+    if (res.data?.success) {
       swal({
         title: 'Updated!',
         text: `${updated.name} data updated successfully.`,

@@ -3,23 +3,36 @@ import 'aos/dist/aos.css';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 
+import instance from '../api/axios';
 import CropCard from '../components/CropCard';
 import Blogs from '../components/Home/Blogs';
 import HeroSlider from '../components/Home/HeroSlider';
 import HowTo from '../components/Home/HowTo';
 import Testimonials from '../components/Home/Testimonials';
 import Loading from '../components/Loading';
-import { API_BASE_URL } from '../config';
 
 const Home = () => {
   const [latestCrops, setLatestCrops] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // useEffect(() => {
+  //   fetch(`${API_BASE_URL}/latest-crops`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setLatestCrops(data.data);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.error('Failed to fetch latest crops:', err);
+  //       setLoading(false);
+  //     });
+  // }, []);
+
   useEffect(() => {
-    fetch(`${API_BASE_URL}/latest-crops`)
-      .then((res) => res.json())
-      .then((data) => {
-        setLatestCrops(data.data);
+    instance
+      .get('/latest-crops')
+      .then((res) => {
+        setLatestCrops(res.data.data);
         setLoading(false);
       })
       .catch((err) => {

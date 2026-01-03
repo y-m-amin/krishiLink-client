@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link, useLoaderData, useParams } from 'react-router';
 import swal from 'sweetalert';
-import { API_BASE_URL } from '../config';
+import instance from '../api/axios';
 import { AuthContext } from '../contexts/AuthContext';
 
 const CropDetails = () => {
@@ -12,10 +12,10 @@ const CropDetails = () => {
   const [interestSent, setInterestSent] = useState(false);
   const [formData, setFormData] = useState({ quantity: 1, message: '' });
 
-  const isOwner = user?.email === crop?.owner?.ownerEmail;
+  const isOwner = user?.email === crop?.data.owner?.ownerEmail;
 
   useEffect(() => {
-    if (crop?.interests?.some((i) => i.userEmail === user?.email)) {
+    if (crop?.data.interests?.some((i) => i.userEmail === user?.email)) {
       setInterestSent(true);
     }
   }, [crop, user]);
@@ -23,66 +23,45 @@ const CropDetails = () => {
   const handleInterestSubmit = async (e) => {
     e.preventDefault();
 
-    // ✅ Validate quantity
     if (formData.quantity < 1) {
-      swal({
-        title: 'Invalid Quantity',
-        text: 'Quantity must be at least 1.',
-        icon: 'warning',
-      });
+      swal('Invalid Quantity', 'Quantity must be at least 1.', 'warning');
       return;
     }
 
-    // ✅ Validate available stock
-    if (formData.quantity > crop.quantity) {
-      swal({
-        title: 'Insufficient Quantity',
-        text: `Only ${crop.quantity} ${crop.unit} available.`,
-        icon: 'error',
-      });
+    if (formData.quantity > crop.data.quantity) {
+      swal(
+        'Insufficient Quantity',
+        `Only ${crop.data.quantity} ${crop.data.unit} available.`,
+        'error'
+      );
       return;
     }
-
-    const interest = {
-      cropId: id,
-      userEmail: user.email,
-      userName: user.displayName,
-      quantity: formData.quantity,
-      message: formData.message,
-      status: 'pending',
-    };
 
     try {
-      const res = await fetch(`${API_BASE_URL}/crops/${id}/interests`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(interest),
+      const res = await instance.post(`/crops/${id}/interests`, {
+        quantity: formData.quantity,
+        message: formData.message,
       });
 
-      if (res.ok) {
+      if (res.data?.success) {
         swal({
           title: 'Interest Submitted!',
-          text: `You expressed interest in ${formData.quantity} ${crop.unit} of ${crop.name}.`,
+          text: 'Your interest has been sent to the seller.',
           icon: 'success',
           buttons: false,
           timer: 1500,
         });
+
         setInterestSent(true);
-      } else {
-        const err = await res.json();
-        swal({
-          title: 'Error',
-          text: err.message || 'Something went wrong. Please try again.',
-          icon: 'error',
-        });
       }
     } catch (error) {
       console.error(error);
-      swal({
-        title: 'Network Error',
-        text: 'Failed to send your interest. Please try again later.',
-        icon: 'error',
-      });
+
+      swal(
+        'Error',
+        error.response?.data?.message || 'Failed to send interest',
+        'error'
+      );
     }
   };
 
@@ -99,13 +78,12 @@ const CropDetails = () => {
 
     if (!confirmAction) return;
 
-    const res = await fetch(`${API_BASE_URL}/interests/${id}/${interestId}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status, reduceQuantityBy }),
+    const res = await instance.patch(`/interests/${id}/${interestId}`, {
+      status,
+      reduceQuantityBy,
     });
 
-    if (res.ok) {
+    if (res.data?.success) {
       swal({
         title:
           status === 'accepted' ? 'Interest Accepted' : 'Interest Rejected',
@@ -179,7 +157,7 @@ const CropDetails = () => {
             </p>
           </div>
 
-          {crop.description && (
+          {crop.data.description && (
             <p className='mt-3 text-base-content/80 leading-relaxed'>
               {crop.data.description}
             </p>
@@ -191,7 +169,7 @@ const CropDetails = () => {
       {!isOwner && user && !interestSent && (
         <div className='max-w-4xl mx-3 xl:mx-auto mt-10 bg-base-100 rounded-2xl shadow-md p-6'>
           <h3 className='text-2xl font-semibold text-center text-primary mb-4'>
-            💬 Send Your Interest
+            Send Your Interest
           </h3>
           <form
             onSubmit={handleInterestSubmit}
@@ -200,7 +178,7 @@ const CropDetails = () => {
             <input
               type='number'
               min={1}
-              max={crop.quantity}
+              max={crop.data.quantity}
               value={formData.quantity}
               onChange={(e) =>
                 setFormData({
@@ -209,7 +187,7 @@ const CropDetails = () => {
                 })
               }
               className='input input-bordered input-accent w-full'
-              placeholder={`Quantity (${crop.unit})`}
+              placeholder={`Quantity (${crop.data.unit})`}
               required
             />
             <input
@@ -222,7 +200,7 @@ const CropDetails = () => {
               placeholder='Message to Seller (optional)'
             />
             <p className='text-center font-bold text-secondary md:col-span-2'>
-              Total Price: ৳{formData.quantity * crop.pricePerUnit}
+              Total Price: ৳{formData.quantity * crop.data.pricePerUnit}
             </p>
             <button
               type='submit'
@@ -251,10 +229,10 @@ const CropDetails = () => {
       {isOwner && (
         <div className='max-w-6xl mx-3 xl:mx-auto bg-base-100 rounded-2xl shadow-md p-6 mt-10'>
           <h3 className='text-2xl font-semibold text-primary mb-4'>
-            📥 Received Interests
+            Received Interests
           </h3>
 
-          {crop.interests?.length > 0 ? (
+          {crop.data.interests?.length > 0 ? (
             <div className='overflow-x-auto'>
               <table className='table w-full'>
                 <thead className='bg-base-300 text-base-content font-semibold'>
@@ -267,7 +245,7 @@ const CropDetails = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {crop.interests.map((i) => (
+                  {crop.data.interests.map((i) => (
                     <tr key={i._id}>
                       <td>{i.userName}</td>
                       <td>{i.quantity}</td>

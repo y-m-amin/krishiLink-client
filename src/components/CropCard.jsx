@@ -37,14 +37,14 @@ const CropCard = ({ crop }) => {
         </h2>
 
         <p className='text-sm text-base-content/70 flex items-center gap-1'>
-          📍 {location}
+          {location}
         </p>
 
         <div className='flex flex-wrap gap-2 mt-3'>
           {type && (
-            <div className='badge badge-outline badge-secondary'>{type}</div>
+            <div className='badge badge-outline badge-primary'>{type}</div>
           )}
-          <div className='badge badge-outline badge-accent'>
+          <div className='badge  badge-primary text-white'>
             Qty: {quantity} {unit}
           </div>
         </div>
