@@ -39,11 +39,8 @@ const Register = () => {
 
     try {
       await createUser(email, password);
-      await fetch(`${API_BASE_URL}/users`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, photo }),
-      });
+      
+     
 
       toast.success('Registration successful!', { autoClose: 1000 });
       setError('');

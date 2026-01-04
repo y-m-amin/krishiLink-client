@@ -73,11 +73,7 @@ const AddCrop = () => {
       ...form,
       pricePerUnit: parseFloat(form.pricePerUnit),
       quantity: parseFloat(form.quantity),
-      owner: {
-        ownerId: user.uid || user._id,
-        ownerEmail: user.email,
-        ownerName: user.displayName,
-      },
+      
     };
 
     try {

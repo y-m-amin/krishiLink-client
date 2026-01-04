@@ -15,6 +15,13 @@ import PaymentSuccess from '../pages/PaymentSuccess';
 import Profile from '../pages/Profile';
 import Register from '../pages/Register';
 import PrivateRoute from './PrivateRoute';
+import DashboardLayout from '../layouts/DashboardLayout';
+import UserDashboard from '../pages/dashboard/UserDashboard';
+import AdminDashboardHome from '../pages/dashboard/admin/AdminDashboardHome';
+import AdminRoute from './AdminRoute';
+import AdminUsers from '../pages/dashboard/admin/AdminUsers';
+import AdminCrops from '../pages/dashboard/admin/AdminCrops';
+import AdminReports from '../pages/dashboard/admin/AdminReports';
 
 const router = createBrowserRouter([
   {
@@ -90,6 +97,49 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: '/dashboard',
+    element: <DashboardLayout />,
+    children: [
+      { index: true, element: <UserDashboard /> },
+      {
+        path: 'admin',
+        element: (
+              <AdminRoute>
+                <AdminDashboardHome />
+              </AdminRoute>
+            ),
+      },
+      {
+        path: 'admin/users',
+        element: (
+          <AdminRoute>
+            <AdminUsers />
+          </AdminRoute>
+        ),
+      },
+       {
+      path: 'admin/crops',
+      element: (
+        <AdminRoute>
+          <AdminCrops />
+        </AdminRoute>
+      ),
+    },
+    {
+      path: 'admin/reports',
+      element: (
+        <AdminRoute>
+          <AdminReports />
+        </AdminRoute>
+      ),
+    },
+
+
+
+    ],
+  },
+
   { path: '*', element: <ErrPage /> },
   {
     path: '/no-crop',

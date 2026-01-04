@@ -20,6 +20,13 @@ const CropDetails = () => {
     }
   }, [crop, user]);
 
+  useEffect(() => {
+  console.log("DEBUG userEmail:", user?.email);
+  console.log("DEBUG ownerEmail:", crop?.data?.owner?.ownerEmail);
+  console.log("DEBUG isOwner:", isOwner);
+}, [user, crop, isOwner]);
+
+
   const handleInterestSubmit = async (e) => {
     e.preventDefault();
 
@@ -162,6 +169,69 @@ const CropDetails = () => {
               {crop.data.description}
             </p>
           )}
+          {/* Report buttons (buyers only) */}
+{user && !isOwner && (
+  <div className='flex flex-wrap gap-2 pt-2'>
+    <button
+      className='btn btn-sm btn-outline btn-error'
+      onClick={async () => {
+        const reason = await swal({
+          title: 'Report Crop',
+          text: 'Write a short reason (e.g. fake listing, wrong info, scam).',
+          content: 'input',
+          buttons: ['Cancel', 'Submit'],
+        });
+
+        if (!reason) return;
+
+        try {
+          const res = await instance.post('/reports', {
+            targetType: 'crop',
+            targetId: crop.data._id, 
+            reason,
+          });
+
+          if (res.data?.success) swal('Reported', 'Thanks! We will review it.', 'success');
+        } catch (e) {
+          console.error(e);
+          swal('Error', e.response?.data?.error?.message || 'Report failed', 'error');
+        }
+      }}
+    >
+      Report Crop
+    </button>
+
+    <button
+      className='btn btn-sm btn-outline btn-warning'
+      onClick={async () => {
+        const reason = await swal({
+          title: 'Report Seller',
+          text: 'Write a short reason.',
+          content: 'input',
+          buttons: ['Cancel', 'Submit'],
+        });
+
+        if (!reason) return;
+
+        try {
+          const res = await instance.post('/reports', {
+            targetType: 'seller',
+            targetId: crop.data.owner?.ownerId, // seller mongo id
+            reason,
+          });
+
+          if (res.data?.success) swal('Reported', 'Thanks! We will review it.', 'success');
+        } catch (e) {
+          console.error(e);
+          swal('Error', e.response?.data?.error?.message || 'Report failed', 'error');
+        }
+      }}
+    >
+      Report Seller
+    </button>
+  </div>
+)}
+
         </div>
       </div>
 

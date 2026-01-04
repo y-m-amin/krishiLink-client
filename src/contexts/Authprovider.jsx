@@ -11,12 +11,18 @@ import { useEffect, useState } from 'react';
 import { API_BASE_URL } from '../config';
 import { auth } from '../firebase/firebase.init';
 import { AuthContext } from './AuthContext';
+import instance from '../api/axios';
+import { jwtDecode } from 'jwt-decode';
+
+
+
 
 const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [role, setRole] = useState(null);
 
   const createUser = (email, password) => {
     setLoading(true);
@@ -38,41 +44,47 @@ const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      //console.log('current user', currentUser);
+    useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        setUser(currentUser);
 
-      if (currentUser) {
-        const userInfo = {
-          name: currentUser.displayName || 'Unnamed User',
-          email: currentUser.email,
-          photo: currentUser.photoURL || '',
-        };
+        (async () => {
+          try {
+            if (currentUser) {
+              const userInfo = {
+                name: currentUser.displayName || 'Unnamed User',
+                email: currentUser.email,
+                photo: currentUser.photoURL || '',
+              };
 
-        // Ensure user exists
-        axios.post(`${API_BASE_URL}/users`, userInfo).catch(() => {});
+              await instance.post('/users', userInfo);
 
-        //  Get JWT from backend
-        axios
-          .post(`${API_BASE_URL}/jwt`, { email: currentUser.email })
-          .then((res) => {
-            localStorage.setItem('token', res.data.token);
-          })
-          .catch((err) => {
-            console.error('JWT error:', err);
-          });
-      } else {
-        localStorage.removeItem('token');
-      }
+              const res = await instance.post('/jwt', { email: currentUser.email });
 
-      setLoading(false);
-    });
+              const token = res.data.token;
+              localStorage.setItem('token', token);
 
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+              //  decode role
+              const decoded = jwtDecode(token);
+              setRole(decoded?.role || 'user');
+            } else {
+              localStorage.removeItem('token');
+              setRole(null);
+            }
+          } catch (err) {
+            console.error('Auth bootstrap error:', err?.response?.data || err);
+            localStorage.removeItem('token');
+            setRole(null);
+          } finally {
+            setLoading(false);
+          }
+        })();
+      });
+
+      return () => unsubscribe();
+    }, []);
+
+
 
   const authInfo = {
     createUser,
@@ -80,6 +92,7 @@ const AuthProvider = ({ children }) => {
     signInWithGoogle,
     signOutUser,
     user,
+    role,
     loading,
   };
   return (

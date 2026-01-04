@@ -100,6 +100,16 @@ const Navbar = () => {
               My Interests
             </NavLink>
           </li>
+          <li>
+            <NavLink to="/dashboard" className={({ isActive }) =>
+              `transition-colors duration-200 ${
+                isActive ? 'bg-primary text-white font-bold rounded-md px-3 py-1' : 'hover:text-primary'
+              }`
+            }>
+              Dashboard
+            </NavLink>
+          </li>
+
         </>
       ) : (
         <>
