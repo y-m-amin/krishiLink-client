@@ -27,13 +27,16 @@ const HERO_SLIDES = [
 const HeroSlider = () => {
   return (
     <>
-      <section className='w-full overflow-hidden shadow-lg'>
+      <section className='max-w-7xl mx-auto overflow-hidden shadow-lg rounded-b-2xl'>
         <Swiper
           modules={[Autoplay, Pagination]}
-          autoplay={{ delay: 2500, disableOnInteraction: false }}
-          pagination={{ clickable: true }}
+          autoplay={{ delay: 2000, disableOnInteraction: false }}
+          pagination={{
+            clickable: true,
+            dynamicBullets: true,
+          }}
           loop
-          className='w-full'
+          className='max-w-7xl'
         >
           {HERO_SLIDES.map((s, i) => (
             <SwiperSlide key={i}>
@@ -45,7 +48,7 @@ const HeroSlider = () => {
                   backgroundPosition: 'center',
                 }}
               >
-                <div className='absolute inset-0 bg-black/40' />
+                <div className='absolute inset-0 bg-black/80' />
                 <div className='relative z-10 px-4'>
                   <h1 className='text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg'>
                     {s.title}

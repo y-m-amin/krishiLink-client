@@ -1,6 +1,8 @@
 import { createBrowserRouter, redirect } from 'react-router';
 import { API_BASE_URL } from '../config';
+import DashboardLayout from '../layouts/DashboardLayout';
 import MainLayout from '../layouts/MainLayout';
+import About from '../pages/About';
 import AddCrop from '../pages/AddCrop';
 import AllCrops from '../pages/AllCrops';
 import CropDetails from '../pages/CropDetails';
@@ -14,14 +16,13 @@ import PaymentFailed from '../pages/PaymentFailed';
 import PaymentSuccess from '../pages/PaymentSuccess';
 import Profile from '../pages/Profile';
 import Register from '../pages/Register';
-import PrivateRoute from './PrivateRoute';
-import DashboardLayout from '../layouts/DashboardLayout';
 import UserDashboard from '../pages/dashboard/UserDashboard';
-import AdminDashboardHome from '../pages/dashboard/admin/AdminDashboardHome';
-import AdminRoute from './AdminRoute';
-import AdminUsers from '../pages/dashboard/admin/AdminUsers';
 import AdminCrops from '../pages/dashboard/admin/AdminCrops';
+import AdminDashboardHome from '../pages/dashboard/admin/AdminDashboardHome';
 import AdminReports from '../pages/dashboard/admin/AdminReports';
+import AdminUsers from '../pages/dashboard/admin/AdminUsers';
+import AdminRoute from './AdminRoute';
+import PrivateRoute from './PrivateRoute';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
       { path: '/login', element: <Login /> },
       { path: '/register', element: <Register /> },
       { path: '/crops', element: <AllCrops /> },
+      { path: '/about', element: <About /> },
 
       // Private routes
       {
@@ -105,10 +107,10 @@ const router = createBrowserRouter([
       {
         path: 'admin',
         element: (
-              <AdminRoute>
-                <AdminDashboardHome />
-              </AdminRoute>
-            ),
+          <AdminRoute>
+            <AdminDashboardHome />
+          </AdminRoute>
+        ),
       },
       {
         path: 'admin/users',
@@ -118,25 +120,22 @@ const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
-       {
-      path: 'admin/crops',
-      element: (
-        <AdminRoute>
-          <AdminCrops />
-        </AdminRoute>
-      ),
-    },
-    {
-      path: 'admin/reports',
-      element: (
-        <AdminRoute>
-          <AdminReports />
-        </AdminRoute>
-      ),
-    },
-
-
-
+      {
+        path: 'admin/crops',
+        element: (
+          <AdminRoute>
+            <AdminCrops />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: 'admin/reports',
+        element: (
+          <AdminRoute>
+            <AdminReports />
+          </AdminRoute>
+        ),
+      },
     ],
   },
 

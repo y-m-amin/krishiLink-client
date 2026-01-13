@@ -73,7 +73,6 @@ const AddCrop = () => {
       ...form,
       pricePerUnit: parseFloat(form.pricePerUnit),
       quantity: parseFloat(form.quantity),
-      
     };
 
     try {
@@ -158,6 +157,7 @@ const AddCrop = () => {
               className='select select-bordered w-full'
             >
               <option value='kg'>Kilogram</option>
+              <option value='pcs'>Piece</option>
               <option value='ton'>Ton</option>
               <option value='bag'>Bag</option>
             </select>

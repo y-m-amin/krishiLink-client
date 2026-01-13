@@ -14,18 +14,32 @@ const CropDetails = () => {
 
   const isOwner = user?.email === crop?.data.owner?.ownerEmail;
 
+  //to do -  will have to update backend /crops/:id/interests too later
   useEffect(() => {
-    if (crop?.data.interests?.some((i) => i.userEmail === user?.email)) {
-      setInterestSent(true);
+    if (!user || !crop?.data?.interests) {
+      setInterestSent(false);
+      return;
     }
+
+    const hasActiveInterest = crop.data.interests.some((i) => {
+      if (i.userEmail !== user.email) return false;
+
+      //
+      if (i.status === 'pending') return true;
+
+      if (i.status === 'accepted' && i.paymentStatus !== 'paid') return true;
+
+      return false;
+    });
+
+    setInterestSent(hasActiveInterest);
   }, [crop, user]);
 
   useEffect(() => {
-  console.log("DEBUG userEmail:", user?.email);
-  console.log("DEBUG ownerEmail:", crop?.data?.owner?.ownerEmail);
-  console.log("DEBUG isOwner:", isOwner);
-}, [user, crop, isOwner]);
-
+    console.log('DEBUG userEmail:', user?.email);
+    console.log('DEBUG ownerEmail:', crop?.data?.owner?.ownerEmail);
+    console.log('DEBUG isOwner:', isOwner);
+  }, [user, crop, isOwner]);
 
   const handleInterestSubmit = async (e) => {
     e.preventDefault();
@@ -120,7 +134,7 @@ const CropDetails = () => {
           <img
             src={crop.data.image}
             alt={crop.data.name}
-            className='w-full h-80 md:h-full object-cover'
+            className='w-full h-80 md:h-full object-cover p-8 '
           />
           {crop.isNew && (
             <span className='absolute top-3 left-3 badge badge-secondary'>
@@ -170,68 +184,77 @@ const CropDetails = () => {
             </p>
           )}
           {/* Report buttons (buyers only) */}
-{user && !isOwner && (
-  <div className='flex flex-wrap gap-2 pt-2'>
-    <button
-      className='btn btn-sm btn-outline btn-error'
-      onClick={async () => {
-        const reason = await swal({
-          title: 'Report Crop',
-          text: 'Write a short reason (e.g. fake listing, wrong info, scam).',
-          content: 'input',
-          buttons: ['Cancel', 'Submit'],
-        });
+          {user && !isOwner && (
+            <div className='flex flex-wrap gap-2 pt-2'>
+              <button
+                className='btn btn-sm btn-outline btn-error'
+                onClick={async () => {
+                  const reason = await swal({
+                    title: 'Report Crop',
+                    text: 'Write a short reason (e.g. fake listing, wrong info, scam).',
+                    content: 'input',
+                    buttons: ['Cancel', 'Submit'],
+                  });
 
-        if (!reason) return;
+                  if (!reason) return;
 
-        try {
-          const res = await instance.post('/reports', {
-            targetType: 'crop',
-            targetId: crop.data._id, 
-            reason,
-          });
+                  try {
+                    const res = await instance.post('/reports', {
+                      targetType: 'crop',
+                      targetId: crop.data._id,
+                      reason,
+                    });
 
-          if (res.data?.success) swal('Reported', 'Thanks! We will review it.', 'success');
-        } catch (e) {
-          console.error(e);
-          swal('Error', e.response?.data?.error?.message || 'Report failed', 'error');
-        }
-      }}
-    >
-      Report Crop
-    </button>
+                    if (res.data?.success)
+                      swal('Reported', 'Thanks! We will review it.', 'success');
+                  } catch (e) {
+                    console.error(e);
+                    swal(
+                      'Error',
+                      e.response?.data?.error?.message || 'Report failed',
+                      'error'
+                    );
+                  }
+                }}
+              >
+                Report Crop
+              </button>
 
-    <button
-      className='btn btn-sm btn-outline btn-warning'
-      onClick={async () => {
-        const reason = await swal({
-          title: 'Report Seller',
-          text: 'Write a short reason.',
-          content: 'input',
-          buttons: ['Cancel', 'Submit'],
-        });
+              <button
+                className='btn btn-sm btn-outline btn-warning'
+                onClick={async () => {
+                  const reason = await swal({
+                    title: 'Report Seller',
+                    text: 'Write a short reason.',
+                    content: 'input',
+                    buttons: ['Cancel', 'Submit'],
+                  });
 
-        if (!reason) return;
+                  if (!reason) return;
 
-        try {
-          const res = await instance.post('/reports', {
-            targetType: 'seller',
-            targetId: crop.data.owner?.ownerId, // seller mongo id
-            reason,
-          });
+                  try {
+                    const res = await instance.post('/reports', {
+                      targetType: 'seller',
+                      targetId: crop.data.owner?.ownerId, // seller mongo id
+                      reason,
+                    });
 
-          if (res.data?.success) swal('Reported', 'Thanks! We will review it.', 'success');
-        } catch (e) {
-          console.error(e);
-          swal('Error', e.response?.data?.error?.message || 'Report failed', 'error');
-        }
-      }}
-    >
-      Report Seller
-    </button>
-  </div>
-)}
-
+                    if (res.data?.success)
+                      swal('Reported', 'Thanks! We will review it.', 'success');
+                  } catch (e) {
+                    console.error(e);
+                    swal(
+                      'Error',
+                      e.response?.data?.error?.message || 'Report failed',
+                      'error'
+                    );
+                  }
+                }}
+              >
+                Report Seller
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -284,14 +307,17 @@ const CropDetails = () => {
 
       {/* Already Sent Message */}
       {!isOwner && interestSent && (
-        <p className='text-success text-center font-medium mt-8'>
-          ✅ You’ve already sent an interest for this crop.{' '}
+        <p className='text-warning text-center font-medium mt-8'>
+          You already have an active interest for this crop.
+          <br />
+          Please wait until it is accepted, rejected, or completed.
+          <br />
           <Link
             to='/my-interests'
             className='underline text-primary hover:text-secondary'
           >
-            Click here to check your interests.
-          </Link>{' '}
+            View my interests
+          </Link>
         </p>
       )}
 

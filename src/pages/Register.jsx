@@ -39,8 +39,6 @@ const Register = () => {
 
     try {
       await createUser(email, password);
-      
-     
 
       toast.success('Registration successful!', { autoClose: 1000 });
       setError('');
@@ -91,7 +89,7 @@ const Register = () => {
       <div className='hero-content flex-col lg:flex-row gap-20 mx-auto'>
         {/* Left side text */}
         <div className='text-center lg:text-left'>
-          <h1 className='text-5xl font-bold text-accent'>Register Now!</h1>
+          <h1 className='text-5xl font-bold text-primary'>Register Now!</h1>
           <p className='py-6 max-w-md text-gray-600'>
             Join our growing agricultural marketplace to connect directly with
             farmers and buyers. Create your account to list crops, send orders,
@@ -157,7 +155,7 @@ const Register = () => {
 
               <button
                 type='submit'
-                className='btn btn-accent btn-outline w-full mt-2'
+                className='btn btn-primary btn-outline w-full mt-2 hover:text-white'
               >
                 Register
               </button>
@@ -166,7 +164,7 @@ const Register = () => {
               <button
                 type='button'
                 onClick={handleGoogleRegister}
-                className='btn btn-outline btn-secondary w-full mt-2 flex items-center justify-center'
+                className='btn btn-outline btn-primary w-full mt-2 flex items-center justify-center hover:text-white '
               >
                 <img
                   src='https://www.svgrepo.com/show/475656/google-color.svg'

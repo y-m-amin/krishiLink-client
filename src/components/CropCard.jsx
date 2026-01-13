@@ -10,6 +10,7 @@ const CropCard = ({ crop }) => {
     pricePerUnit,
     quantity,
     location,
+    verified,
     isNew,
   } = crop || {};
 
@@ -29,11 +30,24 @@ const CropCard = ({ crop }) => {
       </figure>
 
       <div className='card-body p-4'>
-        <h2 className='card-title text-lg font-semibold flex justify-between items-center'>
-          {name}
-          <span className='text-primary font-bold text-sm'>
-            ৳{pricePerUnit}/{unit}
-          </span>
+        <h2 className='card-title text-lg font-semibold flex justify-between items-start gap-2'>
+          <span className='flex items-center gap-2'>{name}</span>
+
+          <div className='flex flex-col items-end gap-1'>
+            <span className='text-primary font-bold text-sm'>
+              ৳{pricePerUnit}/{unit}
+            </span>
+            {verified && (
+              <span
+                className='tooltip tooltip-bottom'
+                data-tip='Verified Seller'
+              >
+                <span className='badge badge-accent text-white text-xs'>
+                  ✔ Verified
+                </span>
+              </span>
+            )}
+          </div>
         </h2>
 
         <p className='text-sm text-base-content/70 flex items-center gap-1'>
@@ -49,7 +63,7 @@ const CropCard = ({ crop }) => {
           </div>
         </div>
 
-        <div className='card-actions justify-end mt-4'>
+        <div className='card-actions  mt-4'>
           <Link
             to={`/crops/${_id}`}
             className='btn btn-md btn-primary text-white hover:text-neutral hover:btn-accent transition-all duration-400 ease-in-out'

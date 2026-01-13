@@ -5,7 +5,7 @@ const Footer = () => (
   <footer className='footer sm:footer-horizontal bg-neutral text-neutral-content items-center p-4'>
     <aside className='grid-flow-col items-center'>
       <Link to='/' className='btn btn-ghost text-xl font-bold'>
-        🌾 KrishiLink
+        Krishi<span className='text-emerald-500 font-inherit'>Link</span>
       </Link>
       <p>Copyright © 2025 - All right reserved</p>
     </aside>

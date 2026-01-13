@@ -8,19 +8,19 @@ import howImg4 from '../../assets/howImg4.png';
 
 const HOW_STEPS = [
   {
-    title: '1.Register or Login to your account',
+    title: '1. Register or Login to your account',
     img: howImg1,
   },
   {
-    title: '2.Post your crops or browse available listings',
+    title: '2. Post your crops or browse available listings',
     img: howImg2,
   },
   {
-    title: '3.Send/receive interests to connect and trade',
+    title: '3. Send/receive interests to connect and trade',
     img: howImg3,
   },
   {
-    title: '4.Accept/reject requests and track your activity',
+    title: '4. Accept/reject requests and track your activity',
     img: howImg4,
   },
 ];
@@ -57,7 +57,7 @@ const HowTo = () => {
                 data-aos-delay={index * 150}
               />
               <h3
-                className='text-2xl md:text-3xl font-semibold text-center md:text-left text-accent'
+                className='text-2xl md:text-3xl font-semibold text-center md:text-left text-secondary'
                 data-aos='fade-up'
                 data-aos-delay={index * 150 + 100}
               >

@@ -3,6 +3,9 @@
 @plugin "daisyui" {
   themes: lemonade --default, sunset;
 }
+.swiper-pagination-progressbar-fill {
+  background: hsl(var(--a));
+}
 
 * {
   font-family: 'Inter', sans-serif;

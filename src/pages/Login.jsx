@@ -68,7 +68,7 @@ const Login = () => {
       <div className='hero-content flex-col lg:flex-row-reverse gap-20 mx-auto'>
         {/* Left side text */}
         <div className='text-center lg:text-left'>
-          <h1 className='text-5xl font-bold text-accent'>Login now!</h1>
+          <h1 className='text-5xl font-bold text-primary'>Login now!</h1>
           <p className='py-6 max-w-md text-gray-600'>
             Access your account to explore and manage your crops effortlessly.
             Stay connected, grow smarter, and keep track of your agri-business.
@@ -122,7 +122,7 @@ const Login = () => {
 
               <button
                 type='submit'
-                className='btn btn-accent btn-outline w-full mt-2'
+                className='btn btn-primary btn-outline w-full mt-2 hover:text-white'
               >
                 Login
               </button>
@@ -130,7 +130,7 @@ const Login = () => {
               <button
                 type='button'
                 onClick={handleGoogle}
-                className='btn btn-outline btn-secondary w-full mt-2 flex items-center justify-center'
+                className='btn btn-outline btn-primary w-full mt-2 flex items-center justify-center hover:text-white'
               >
                 <img
                   src='https://www.svgrepo.com/show/475656/google-color.svg'

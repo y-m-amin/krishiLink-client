@@ -5,11 +5,11 @@ const money = (n) => `৳${Number(n || 0).toLocaleString()}`;
 
 const StatCard = ({ title, value, hint }) => {
   return (
-    <div className="card bg-base-100 border shadow-sm">
-      <div className="card-body p-4">
-        <p className="text-xs opacity-70">{title}</p>
-        <p className="text-3xl font-bold mt-1">{value}</p>
-        {hint ? <p className="text-xs opacity-60 mt-2">{hint}</p> : null}
+    <div className='card bg-base-100 border shadow-sm'>
+      <div className='card-body p-4'>
+        <p className='text-xs opacity-70'>{title}</p>
+        <p className='text-3xl font-bold mt-1'>{value}</p>
+        {hint ? <p className='text-xs opacity-60 mt-2'>{hint}</p> : null}
       </div>
     </div>
   );
@@ -28,7 +28,9 @@ const AdminDashboardHome = () => {
       setStats(res.data?.data || null);
     } catch (e) {
       console.error('admin/dashboard error:', e);
-      setErrMsg(e?.response?.data?.error?.message || 'Failed to load admin stats');
+      setErrMsg(
+        e?.response?.data?.error?.message || 'Failed to load admin stats'
+      );
       setStats(null);
     } finally {
       setLoading(false);
@@ -66,12 +68,12 @@ const AdminDashboardHome = () => {
   }, [stats]);
 
   return (
-    <div className="p-4 space-y-4">
+    <div className='p-4 space-y-4'>
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3'>
         <div>
-          <h2 className="text-2xl font-bold">Admin Dashboard</h2>
-          <p className="text-sm opacity-70">
+          <h2 className='text-2xl font-bold'>Admin Dashboard</h2>
+          <p className='text-sm opacity-70'>
             Overview of users, crops, payments, and platform earnings.
           </p>
         </div>
@@ -86,45 +88,49 @@ const AdminDashboardHome = () => {
 
       {/* Error */}
       {errMsg ? (
-        <div className="alert alert-error">
+        <div className='alert alert-error'>
           <span>{errMsg}</span>
         </div>
       ) : null}
 
       {/* Loading skeleton */}
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3'>
           {[1, 2, 3, 4].map((k) => (
-            <div key={k} className="card bg-base-100 border">
-              <div className="card-body p-4">
-                <div className="skeleton h-3 w-28 mb-3" />
-                <div className="skeleton h-8 w-40" />
-                <div className="skeleton h-3 w-44 mt-4" />
+            <div key={k} className='card bg-base-100 border'>
+              <div className='card-body p-4'>
+                <div className='skeleton h-3 w-28 mb-3' />
+                <div className='skeleton h-8 w-40' />
+                <div className='skeleton h-3 w-44 mt-4' />
               </div>
             </div>
           ))}
         </div>
       ) : (
         /* Cards */
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3'>
           {cards.map((c) => (
-            <StatCard key={c.title} title={c.title} value={c.value} hint={c.hint} />
+            <StatCard
+              key={c.title}
+              title={c.title}
+              value={c.value}
+              hint={c.hint}
+            />
           ))}
         </div>
       )}
 
       {/* Quick note box */}
       {!loading && stats ? (
-        <div className="card bg-base-100 border">
-          <div className="card-body p-4">
-            <p className="font-semibold mb-1">Notes</p>
-            <ul className="list-disc pl-5 text-sm opacity-80 space-y-1">
-  <li>Blocked users: {stats.blockedUsers}</li>
-  <li>Blocked crops: {stats.blockedCrops}</li>
-  <li>Unverified crops: {stats.unverifiedCrops}</li>
-  <li>Open reports: {stats.openReports}</li>
-</ul>
-
+        <div className='card bg-base-100 border'>
+          <div className='card-body p-4'>
+            <p className='font-semibold mb-1'>Notes</p>
+            <ul className='list-disc pl-5 text-sm opacity-80 space-y-1'>
+              <li>Blocked users: {stats.blockedUsers}</li>
+              <li>Blocked crops: {stats.blockedCrops}</li>
+              <li>Unverified crops: {stats.unverifiedCrops}</li>
+              <li>Open reports: {stats.openReports}</li>
+            </ul>
           </div>
         </div>
       ) : null}
