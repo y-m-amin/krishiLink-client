@@ -24,7 +24,7 @@ const PaymentSuccess = () => {
       .post('/payments/confirm', { sessionId })
       .then(() => {
         swal({
-          title: 'Payment Successful 🎉',
+          title: 'Payment Successful ',
           text: 'Your payment has been confirmed.',
           icon: 'success',
           timer: 1500,
